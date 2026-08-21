@@ -1,0 +1,6 @@
+{
+  "name": ".gitignore Generator",
+  "description": "A comprehensive and customizable .gitignore generator supporting 120+ languages, frameworks, operating systems, and IDEs with interactive preview, instant downloads, clipboard copy, custom rules, presets, local sync, and developer documentation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
