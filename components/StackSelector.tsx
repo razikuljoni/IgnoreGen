@@ -133,18 +133,18 @@ export const StackSelector: React.FC<StackSelectorProps> = ({
 
   return (
     <section 
-      className="flex flex-col h-full bg-[#0c0c0c] text-[#e5e5e5] rounded-xl border border-[#1f1f1f] shadow-lg overflow-hidden"
+      className="flex flex-col h-full bg-white dark:bg-[#0c0c0c] text-slate-900 dark:text-[#e5e5e5] rounded-xl border border-slate-200 dark:border-[#1f1f1f] shadow-lg overflow-hidden transition-colors duration-300"
       aria-label="Technology Stack Selector"
     >
       {/* Top Search & Presets Bar */}
-      <div className="p-4 sm:p-5 border-b border-[#1f1f1f] space-y-3.5 bg-[#0f0f0f]">
+      <div className="p-4 sm:p-5 border-b border-slate-200 dark:border-[#1f1f1f] space-y-3.5 bg-slate-50 dark:bg-[#0f0f0f]">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h2 className="text-base font-semibold text-[#e5e5e5] flex items-center gap-2">
+            <h2 className="text-base font-semibold text-slate-900 dark:text-[#e5e5e5] flex items-center gap-2">
               <SlidersHorizontal className="w-4 h-4 text-[#3b82f6]" />
               Select Technologies & Stacks
             </h2>
-            <p className="text-xs text-[#888] mt-0.5">
+            <p className="text-xs text-slate-500 dark:text-[#888] mt-0.5">
               Choose languages, frameworks, operating systems, and IDE tools
             </p>
           </div>
@@ -154,7 +154,7 @@ export const StackSelector: React.FC<StackSelectorProps> = ({
               id="select-recommended-btn"
               type="button"
               onClick={handleSelectRecommended}
-              className="text-xs font-medium px-2.5 py-1 rounded bg-[#1a1a1a] hover:bg-[#222] text-[#3b82f6] border border-[#3b82f6]/30 transition-all focus:outline-none focus-visible:ring-1 focus-visible:ring-[#3b82f6]"
+              className="text-xs font-medium px-2.5 py-1 rounded bg-slate-200 dark:bg-[#1a1a1a] hover:bg-slate-300 dark:hover:bg-[#222] text-[#3b82f6] border border-[#3b82f6]/30 transition-all focus:outline-none focus-visible:ring-1 focus-visible:ring-[#3b82f6]"
             >
               ⭐ Recommended Defaults
             </button>
@@ -163,7 +163,7 @@ export const StackSelector: React.FC<StackSelectorProps> = ({
                 id="clear-all-stacks-btn"
                 type="button"
                 onClick={onClearAll}
-                className="text-xs font-medium px-2.5 py-1 rounded text-red-400 hover:bg-red-950/40 border border-transparent hover:border-red-900/50 transition-all focus:outline-none"
+                className="text-xs font-medium px-2.5 py-1 rounded text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 border border-transparent hover:border-red-200 dark:hover:border-red-900/50 transition-all focus:outline-none"
               >
                 Clear all ({selectedCount})
               </button>
@@ -173,7 +173,7 @@ export const StackSelector: React.FC<StackSelectorProps> = ({
 
         {/* Search Bar Input */}
         <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#555]">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 dark:text-[#555]">
             <Search className="w-4 h-4" />
           </div>
           <input
@@ -183,14 +183,14 @@ export const StackSelector: React.FC<StackSelectorProps> = ({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search 120+ stacks (e.g. Next.js, Python, Docker, VS Code, macOS, .env)..."
-            className="w-full pl-9 pr-9 py-2 bg-[#1a1a1a] border border-[#333] rounded-md text-xs text-[#e5e5e5] placeholder-[#555] focus:outline-none focus:ring-1 focus:ring-[#3b82f6] focus:border-[#3b82f6] transition-all"
+            className="w-full pl-9 pr-9 py-2 bg-white dark:bg-[#1a1a1a] border border-slate-300 dark:border-[#333] rounded-md text-xs text-slate-900 dark:text-[#e5e5e5] placeholder-slate-400 dark:placeholder-[#555] focus:outline-none focus:ring-1 focus:ring-[#3b82f6] focus:border-[#3b82f6] transition-all"
             aria-label="Search tech stack"
           />
           {searchQuery && (
             <button
               type="button"
               onClick={() => setSearchQuery('')}
-              className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#666] hover:text-[#e5e5e5]"
+              className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-700 dark:text-[#666] dark:hover:text-[#e5e5e5]"
               aria-label="Clear search query"
             >
               <X className="w-4 h-4" />
@@ -200,7 +200,7 @@ export const StackSelector: React.FC<StackSelectorProps> = ({
 
         {/* Popular Preset Bundles Carousel */}
         <div className="space-y-1.5">
-          <div className="flex items-center justify-between text-[10px] font-bold text-[#555] uppercase tracking-wider">
+          <div className="flex items-center justify-between text-[10px] font-bold text-slate-400 dark:text-[#555] uppercase tracking-wider">
             <span>⚡ Quick Stacks</span>
             <span>Click to auto-configure</span>
           </div>
@@ -216,7 +216,7 @@ export const StackSelector: React.FC<StackSelectorProps> = ({
                   className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-medium whitespace-nowrap transition-all border ${
                     isFullySelected
                       ? 'bg-[#3b82f6] text-white border-[#2563eb] shadow-md shadow-blue-900/20'
-                      : 'bg-[#141414] text-[#888] hover:text-[#e5e5e5] border-[#262626] hover:border-[#3b82f6]/40'
+                      : 'bg-white dark:bg-[#141414] text-slate-600 dark:text-[#888] hover:text-slate-900 dark:hover:text-[#e5e5e5] border-slate-200 dark:border-[#262626] hover:border-[#3b82f6]/40'
                   }`}
                   title={preset.description}
                 >
@@ -240,11 +240,11 @@ export const StackSelector: React.FC<StackSelectorProps> = ({
                 onClick={() => setActiveCategory(cat.id)}
                 className={`px-3 py-1.5 rounded-md text-xs transition-all flex items-center gap-1.5 whitespace-nowrap ${
                   isActive
-                    ? 'bg-[#1a1a1a] text-[#3b82f6] font-medium border border-[#3b82f6]/30'
-                    : 'text-[#888] hover:bg-[#1a1a1a] hover:text-[#e5e5e5] border border-transparent'
+                    ? 'bg-white dark:bg-[#1a1a1a] text-[#3b82f6] font-medium border border-[#3b82f6]/30 shadow-xs'
+                    : 'text-slate-600 dark:text-[#888] hover:bg-slate-200 dark:hover:bg-[#1a1a1a] hover:text-slate-900 dark:hover:text-[#e5e5e5] border border-transparent'
                 }`}
               >
-                <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-[#3b82f6]' : 'bg-[#333]'}`}></span>
+                <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-[#3b82f6]' : 'bg-slate-300 dark:bg-[#333]'}`}></span>
                 <span>{cat.label}</span>
               </button>
             );
@@ -253,13 +253,13 @@ export const StackSelector: React.FC<StackSelectorProps> = ({
       </div>
 
       {/* Selected Counter & Bulk Actions Sub-header */}
-      <div className="px-4 py-2 bg-[#0a0a0a] border-b border-[#1f1f1f] flex items-center justify-between text-xs text-[#888]">
+      <div className="px-4 py-2 bg-slate-100 dark:bg-[#0a0a0a] border-b border-slate-200 dark:border-[#1f1f1f] flex items-center justify-between text-xs text-slate-600 dark:text-[#888]">
         <div className="flex items-center gap-2">
           <span>
-            Showing <strong className="text-[#e5e5e5]">{filteredTemplates.length}</strong> items
+            Showing <strong className="text-slate-900 dark:text-[#e5e5e5]">{filteredTemplates.length}</strong> items
           </span>
           {selectedCount > 0 && (
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-[#1a1a1a] text-[#3b82f6] border border-[#3b82f6]/30">
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-white dark:bg-[#1a1a1a] text-[#3b82f6] border border-[#3b82f6]/30">
               <Check className="w-3 h-3" /> {selectedCount} active
             </span>
           )}
@@ -325,30 +325,30 @@ export const StackSelector: React.FC<StackSelectorProps> = ({
                   aria-label={`${template.name}: ${template.description}`}
                   className={`group relative p-3.5 rounded-xl border text-left cursor-pointer transition-all flex flex-col justify-between select-none focus:outline-none ${
                     isSelected
-                      ? 'bg-[#141414] border-[#3b82f6]/50 ring-1 ring-[#3b82f6]/20 hover:bg-[#1a1a1a]'
-                      : 'bg-[#141414] border-[#222] hover:border-[#333] hover:bg-[#1a1a1a]'
+                      ? 'bg-blue-50/50 dark:bg-[#141414] border-[#3b82f6]/50 ring-1 ring-[#3b82f6]/20 hover:bg-blue-50 dark:hover:bg-[#1a1a1a]'
+                      : 'bg-white dark:bg-[#141414] border-slate-200 dark:border-[#222] hover:border-slate-300 dark:hover:border-[#333] hover:bg-slate-50 dark:hover:bg-[#1a1a1a]'
                   }`}
                 >
                   <div>
                     <div className="flex items-start justify-between gap-2 mb-2">
                       <div className="flex items-center gap-2">
                         {/* 2-Letter Tech Badge */}
-                        <div className={`p-1.5 px-2 bg-[#000] rounded-md border border-[#333] ${badge.color} font-mono font-bold text-xs`}>
+                        <div className={`p-1.5 px-2 bg-slate-900 dark:bg-[#000] rounded-md border border-slate-700 dark:border-[#333] ${badge.color} font-mono font-bold text-xs`}>
                           {badge.code}
                         </div>
                         <div>
                           <div className="flex items-center gap-1.5">
-                            <span className="text-sm font-medium text-[#e5e5e5] group-hover:text-white transition-colors">
+                            <span className="text-sm font-medium text-slate-900 dark:text-[#e5e5e5] group-hover:text-blue-600 dark:group-hover:text-white transition-colors">
                               {template.name}
                             </span>
                             {template.popular && (
-                              <span className="text-[9px] font-semibold px-1.5 py-0.2 rounded bg-[#1a1a1a] text-[#888] border border-[#333]">
+                              <span className="text-[9px] font-semibold px-1.5 py-0.2 rounded bg-slate-100 dark:bg-[#1a1a1a] text-slate-600 dark:text-[#888] border border-slate-200 dark:border-[#333]">
                                 Popular
                               </span>
                             )}
                           </div>
                           {template.category === 'security-secrets' && (
-                            <span className="inline-flex items-center gap-0.5 text-[9px] font-semibold text-red-400">
+                            <span className="inline-flex items-center gap-0.5 text-[9px] font-semibold text-red-500 dark:text-red-400">
                               <ShieldCheck className="w-2.5 h-2.5" /> Security
                             </span>
                           )}
@@ -365,18 +365,18 @@ export const StackSelector: React.FC<StackSelectorProps> = ({
                       />
                     </div>
 
-                    <p className="text-[11px] text-[#666] line-clamp-2 leading-relaxed">
+                    <p className="text-[11px] text-slate-500 dark:text-[#666] line-clamp-2 leading-relaxed">
                       {template.description}
                     </p>
                   </div>
 
                   {/* Footer tags and preview action */}
-                  <div className="mt-3 pt-2 border-t border-[#1f1f1f] flex items-center justify-between gap-2">
+                  <div className="mt-3 pt-2 border-t border-slate-100 dark:border-[#1f1f1f] flex items-center justify-between gap-2">
                     <div className="flex items-center gap-1 overflow-hidden">
                       {template.tags.slice(0, 2).map((tag) => (
                         <span
                           key={tag}
-                          className="text-[9px] px-1.5 py-0.5 rounded bg-[#111] border border-[#222] text-[#888]"
+                          className="text-[9px] px-1.5 py-0.5 rounded bg-slate-100 dark:bg-[#111] border border-slate-200 dark:border-[#222] text-slate-500 dark:text-[#888]"
                         >
                           #{tag}
                         </span>

@@ -91,31 +91,31 @@ export const GitignorePreview: React.FC<GitignorePreviewProps> = ({
 
   return (
     <section 
-      className="flex flex-col h-full bg-[#0c0c0c] text-[#e5e5e5] rounded-xl border border-[#1f1f1f] shadow-lg overflow-hidden"
+      className="flex flex-col h-full bg-white dark:bg-[#0c0c0c] text-slate-900 dark:text-[#e5e5e5] rounded-xl border border-slate-200 dark:border-[#1f1f1f] shadow-lg overflow-hidden transition-colors duration-300"
       aria-label="Generated .gitignore Preview and Actions"
     >
       {/* Top Action Bar */}
-      <div className="p-4 sm:p-5 border-b border-[#1f1f1f] bg-[#0f0f0f] flex flex-col gap-3">
+      <div className="p-4 sm:p-5 border-b border-slate-200 dark:border-[#1f1f1f] bg-slate-50 dark:bg-[#0f0f0f] flex flex-col gap-3">
         <div className="flex flex-wrap items-center justify-between gap-3">
           {/* File Tab & View Modes */}
           <div className="flex items-center gap-2">
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-[#141414] border border-[#222] shadow-sm">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-white dark:bg-[#141414] border border-slate-200 dark:border-[#222] shadow-sm">
               <FileCode className="w-4 h-4 text-[#3b82f6]" />
-              <span className="font-mono text-xs font-bold text-[#e5e5e5]">.gitignore</span>
-              <span className="text-[10px] px-1.5 py-0.2 rounded bg-[#0a0a0a] text-[#888] border border-[#222] font-mono">
+              <span className="font-mono text-xs font-bold text-slate-900 dark:text-[#e5e5e5]">.gitignore</span>
+              <span className="text-[10px] px-1.5 py-0.2 rounded bg-slate-100 dark:bg-[#0a0a0a] text-slate-500 dark:text-[#888] border border-slate-200 dark:border-[#222] font-mono">
                 {formattedSize}
               </span>
             </div>
 
             {/* View Mode Tabs */}
-            <div className="flex items-center p-0.5 rounded-md bg-[#141414] border border-[#222] text-xs">
+            <div className="flex items-center p-0.5 rounded-md bg-white dark:bg-[#141414] border border-slate-200 dark:border-[#222] text-xs">
               <button
                 type="button"
                 onClick={() => setViewMode('highlighted')}
                 className={`px-2.5 py-1 rounded font-medium transition-all ${
                   viewMode === 'highlighted'
-                    ? 'bg-[#222] text-[#e5e5e5] shadow-xs'
-                    : 'text-[#888] hover:text-[#e5e5e5]'
+                    ? 'bg-slate-100 dark:bg-[#222] text-slate-900 dark:text-[#e5e5e5] shadow-xs'
+                    : 'text-slate-500 dark:text-[#888] hover:text-slate-900 dark:hover:text-[#e5e5e5]'
                 }`}
               >
                 Preview
@@ -125,8 +125,8 @@ export const GitignorePreview: React.FC<GitignorePreviewProps> = ({
                 onClick={() => setViewMode('custom')}
                 className={`px-2.5 py-1 rounded font-medium transition-all ${
                   viewMode === 'custom'
-                    ? 'bg-[#222] text-[#e5e5e5] shadow-xs'
-                    : 'text-[#888] hover:text-[#e5e5e5]'
+                    ? 'bg-slate-100 dark:bg-[#222] text-slate-900 dark:text-[#e5e5e5] shadow-xs'
+                    : 'text-slate-500 dark:text-[#888] hover:text-slate-900 dark:hover:text-[#e5e5e5]'
                 }`}
               >
                 Custom Rules {customRules.trim() ? '•' : ''}
@@ -136,8 +136,8 @@ export const GitignorePreview: React.FC<GitignorePreviewProps> = ({
                 onClick={() => setViewMode('raw')}
                 className={`px-2.5 py-1 rounded font-medium transition-all ${
                   viewMode === 'raw'
-                    ? 'bg-[#222] text-[#e5e5e5] shadow-xs'
-                    : 'text-[#888] hover:text-[#e5e5e5]'
+                    ? 'bg-slate-100 dark:bg-[#222] text-slate-900 dark:text-[#e5e5e5] shadow-xs'
+                    : 'text-slate-500 dark:text-[#888] hover:text-slate-900 dark:hover:text-[#e5e5e5]'
                 }`}
               >
                 Raw Text
@@ -263,19 +263,19 @@ export const GitignorePreview: React.FC<GitignorePreviewProps> = ({
       </div>
 
       {/* Editor Content Area */}
-      <div className="flex-1 overflow-hidden relative flex flex-col bg-[#0a0a0a] text-[#abb2bf] font-mono text-xs">
+      <div className="flex-1 overflow-hidden relative flex flex-col bg-slate-900 dark:bg-[#0a0a0a] text-slate-100 dark:text-[#abb2bf] font-mono text-xs">
         {viewMode === 'custom' ? (
           /* Custom Rules Editor */
-          <div className="p-4 flex-1 flex flex-col gap-3 bg-[#0a0a0a] text-[#e5e5e5]">
+          <div className="p-4 flex-1 flex flex-col gap-3 bg-white dark:bg-[#0a0a0a] text-slate-900 dark:text-[#e5e5e5]">
             <div className="flex items-center justify-between text-xs">
               <div className="flex items-center gap-2">
                 <FileText className="w-4 h-4 text-[#3b82f6]" />
-                <span className="font-semibold text-[#e5e5e5]">Custom Project-Specific Rules</span>
+                <span className="font-semibold text-slate-900 dark:text-[#e5e5e5]">Custom Project-Specific Rules</span>
               </div>
-              <span className="text-[#666] text-[11px]">Appended directly to generated output</span>
+              <span className="text-slate-400 dark:text-[#666] text-[11px]">Appended directly to generated output</span>
             </div>
-            <p className="text-xs text-[#888]">
-              Type custom patterns below (e.g. <code className="text-[#3b82f6]">/secrets/*.json</code>, <code className="text-emerald-400">!important.env</code>, <code className="text-[#3b82f6]">/uploads/</code>).
+            <p className="text-xs text-slate-500 dark:text-[#888]">
+              Type custom patterns below (e.g. <code className="text-[#3b82f6]">/secrets/*.json</code>, <code className="text-emerald-500 dark:text-emerald-400">!important.env</code>, <code className="text-[#3b82f6]">/uploads/</code>).
             </p>
             <textarea
               id="custom-rules-textarea"
@@ -287,7 +287,7 @@ export const GitignorePreview: React.FC<GitignorePreviewProps> = ({
 local-dev.sqlite
 !keep-this-file.txt`}
               rows={12}
-              className="w-full flex-1 p-3 rounded-md bg-[#141414] border border-[#222] text-[#e5e5e5] font-mono text-xs focus:outline-none focus:ring-1 focus:ring-[#3b82f6] resize-none leading-relaxed"
+              className="w-full flex-1 p-3 rounded-md bg-slate-50 dark:bg-[#141414] border border-slate-200 dark:border-[#222] text-slate-900 dark:text-[#e5e5e5] font-mono text-xs focus:outline-none focus:ring-1 focus:ring-[#3b82f6] resize-none leading-relaxed"
               aria-label="Custom .gitignore rules editor"
             />
             <div className="flex items-center justify-between text-xs text-[#666]">

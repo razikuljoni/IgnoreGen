@@ -39,15 +39,46 @@ export default function Home() {
 
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  // Track client hydration safely
+  // Track client hydration and theme dynamic sync safely
   useEffect(() => {
-    // Sync theme on mount
     const root = document.documentElement;
-    const isDark =
-      preferences.theme === 'dark' ||
-      (preferences.theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-    if (isDark) root.classList.add('dark');
-    else root.classList.remove('dark');
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const updateThemeClass = () => {
+      const isDark =
+        preferences.theme === 'dark' ||
+        (preferences.theme === 'system' && mediaQuery.matches);
+
+      if (isDark) {
+        root.classList.add('dark');
+        root.classList.remove('light');
+      } else {
+        root.classList.remove('dark');
+        root.classList.add('light');
+      }
+    };
+
+    updateThemeClass();
+
+    const handleSystemChange = () => {
+      if (preferences.theme === 'system') {
+        updateThemeClass();
+      }
+    };
+
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener('change', handleSystemChange);
+    } else {
+      mediaQuery.addListener(handleSystemChange);
+    }
+
+    return () => {
+      if (mediaQuery.removeEventListener) {
+        mediaQuery.removeEventListener('change', handleSystemChange);
+      } else {
+        mediaQuery.removeListener(handleSystemChange);
+      }
+    };
   }, [preferences.theme]);
 
   // Persist selections
@@ -162,7 +193,7 @@ export default function Home() {
   }, [generated.rawText, docsOpen, shortcutsOpen, presetsOpen, aiOpen]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0a0a0a] text-[#e5e5e5] antialiased">
+    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-[#0a0a0a] text-slate-900 dark:text-[#e5e5e5] transition-colors duration-300 antialiased">
       {/* Screen Reader Live Region for Accessibility Announcements */}
       <div 
         role="status" 
@@ -187,14 +218,14 @@ export default function Home() {
       {/* Main Container */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-5 lg:p-6 flex flex-col gap-4">
         {/* Mobile Tab Switcher */}
-        <div className="lg:hidden flex items-center p-1 rounded-lg bg-[#141414] border border-[#222]">
+        <div className="lg:hidden flex items-center p-1 rounded-lg bg-white dark:bg-[#141414] border border-slate-200 dark:border-[#222]">
           <button
             type="button"
             onClick={() => setMobileTab('selector')}
             className={`flex-1 py-2 rounded-md text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
               mobileTab === 'selector'
-                ? 'bg-[#222] text-[#e5e5e5] shadow-xs'
-                : 'text-[#888] hover:text-[#e5e5e5]'
+                ? 'bg-slate-100 dark:bg-[#222] text-slate-900 dark:text-[#e5e5e5] shadow-xs'
+                : 'text-slate-500 dark:text-[#888] hover:text-slate-900 dark:hover:text-[#e5e5e5]'
             }`}
           >
             <SlidersHorizontal className="w-3.5 h-3.5 text-[#3b82f6]" />
@@ -205,8 +236,8 @@ export default function Home() {
             onClick={() => setMobileTab('preview')}
             className={`flex-1 py-2 rounded-md text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
               mobileTab === 'preview'
-                ? 'bg-[#222] text-[#e5e5e5] shadow-xs'
-                : 'text-[#888] hover:text-[#e5e5e5]'
+                ? 'bg-slate-100 dark:bg-[#222] text-slate-900 dark:text-[#e5e5e5] shadow-xs'
+                : 'text-slate-500 dark:text-[#888] hover:text-slate-900 dark:hover:text-[#e5e5e5]'
             }`}
           >
             <Eye className="w-3.5 h-3.5 text-[#3b82f6]" />

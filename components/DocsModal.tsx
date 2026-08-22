@@ -39,23 +39,23 @@ export const DocsModal: React.FC<DocsModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <div 
-      className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 bg-black/60 dark:bg-black/80 backdrop-blur-xs flex items-center justify-center p-4 transition-colors duration-300"
       role="dialog"
       aria-modal="true"
       aria-labelledby="docs-modal-title"
     >
-      <div className="bg-[#0f0f0f] text-[#e5e5e5] rounded-xl border border-[#1f1f1f] max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+      <div className="bg-white dark:bg-[#0f0f0f] text-slate-900 dark:text-[#e5e5e5] rounded-xl border border-slate-200 dark:border-[#1f1f1f] max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
         {/* Header */}
-        <div className="p-4 sm:p-5 border-b border-[#1f1f1f] flex items-center justify-between">
+        <div className="p-4 sm:p-5 border-b border-slate-200 dark:border-[#1f1f1f] flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-[#141414] border border-[#222] text-[#3b82f6] flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-[#141414] border border-slate-200 dark:border-[#222] text-[#3b82f6] flex items-center justify-center">
               <BookOpen className="w-4 h-4" />
             </div>
             <div>
-              <h3 id="docs-modal-title" className="text-base font-bold text-[#e5e5e5]">
+              <h3 id="docs-modal-title" className="text-base font-bold text-slate-900 dark:text-[#e5e5e5]">
                 Developer Documentation &amp; Gitignore Cheat Sheet
               </h3>
-              <p className="text-xs text-[#888]">
+              <p className="text-xs text-slate-500 dark:text-[#888]">
                 Complete guide to syntax rules, git commands, troubleshooting, and security best practices
               </p>
             </div>
@@ -64,7 +64,7 @@ export const DocsModal: React.FC<DocsModalProps> = ({ isOpen, onClose }) => {
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 text-[#888] hover:text-[#e5e5e5] rounded-md hover:bg-[#1a1a1a]"
+            className="p-1.5 text-slate-400 hover:text-slate-700 dark:text-[#888] dark:hover:text-[#e5e5e5] rounded-md hover:bg-slate-100 dark:hover:bg-[#1a1a1a]"
             aria-label="Close docs modal"
           >
             <X className="w-5 h-5" />
