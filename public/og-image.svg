@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#090d16" />
+    </linearGradient>
+    <linearGradient id="brand" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#2dd4bf" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="#3b82f6" flood-opacity="0.4" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <circle cx="1000" cy="150" r="300" fill="#3b82f6" opacity="0.08" filter="blur(60px)" />
+  <circle cx="200" cy="500" r="250" fill="#2dd4bf" opacity="0.06" filter="blur(60px)" />
+
+  <!-- Container Box -->
+  <rect x="80" y="80" width="1040" height="470" rx="24" fill="#141c2e" stroke="#1e293b" stroke-width="2" />
+
+  <!-- Logo -->
+  <rect x="140" y="140" width="96" height="96" rx="24" fill="url(#brand)" filter="url(#glow)" />
+  <text x="188" y="210" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="52" fill="#0f0f0f" text-anchor="middle">.g</text>
+
+  <!-- Title & Subtitle -->
+  <text x="260" y="185" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="800" font-size="48" fill="#f8fafc">IgnoreGen<tspan fill="#3b82f6">.io</tspan></text>
+  <text x="260" y="225" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="500" font-size="20" fill="#94a3b8">Fast, Custom &amp; AI-Powered .gitignore Generator</text>
+
+  <!-- Key Features Grid -->
+  <rect x="140" y="280" width="280" height="120" rx="16" fill="#0f172a" stroke="#334155" />
+  <text x="170" y="330" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="700" font-size="24" fill="#38bdf8">120+ Templates</text>
+  <text x="170" y="365" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="400" font-size="16" fill="#94a3b8">Languages, Frameworks, IDEs</text>
+
+  <rect x="460" y="280" width="280" height="120" rx="16" fill="#0f172a" stroke="#334155" />
+  <text x="490" y="330" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="700" font-size="24" fill="#2dd4bf">AI Stack Detector</text>
+  <text x="490" y="365" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="400" font-size="16" fill="#94a3b8">Gemini AI Auto-Selection</text>
+
+  <rect x="780" y="280" width="260" height="120" rx="16" fill="#0f172a" stroke="#334155" />
+  <text x="810" y="330" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="700" font-size="24" fill="#a855f7">Local Sync &amp; Presets</text>
+  <text x="810" y="365" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="400" font-size="16" fill="#94a3b8">Instant Copy &amp; Download</text>
+
+  <!-- Footer Link -->
+  <text x="140" y="485" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="600" font-size="20" fill="#64748b">https://ignoregen.vercel.app</text>
+  <text x="1040" y="485" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="600" font-size="18" fill="#3b82f6" text-anchor="end">By MD Razikul Islam Joni</text>
+</svg>

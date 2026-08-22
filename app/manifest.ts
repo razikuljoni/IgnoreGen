@@ -1,0 +1,20 @@
+import type { MetadataRoute } from 'next';
+
+export default function manifest(): MetadataRoute.Manifest {
+  return {
+    name: 'IgnoreGen - .gitignore Generator',
+    short_name: 'IgnoreGen',
+    description: 'Fast, custom & AI-powered .gitignore generator for 120+ stacks, frameworks, OS, and IDEs.',
+    start_url: '/',
+    display: 'standalone',
+    background_color: '#0f0f0f',
+    theme_color: '#3b82f6',
+    icons: [
+      {
+        src: '/icon.svg',
+        sizes: 'any',
+        type: 'image/svg+xml',
+      },
+    ],
+  };
+}
