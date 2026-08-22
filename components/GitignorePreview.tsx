@@ -168,10 +168,10 @@ export const GitignorePreview: React.FC<GitignorePreviewProps> = ({
               id="download-gitignore-btn"
               type="button"
               onClick={handleDownload}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs font-semibold bg-[#1a1a1a] hover:bg-[#222] text-[#e5e5e5] border border-[#333] transition-all active:scale-95 focus:outline-none"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-[#1a1a1a] dark:hover:bg-[#222] text-slate-800 dark:text-[#e5e5e5] border border-slate-200 dark:border-[#333] transition-all active:scale-95 focus:outline-none"
               aria-label="Download .gitignore file directly"
             >
-              <Download className="w-4 h-4 text-[#888]" />
+              <Download className="w-4 h-4 text-slate-500 dark:text-[#888]" />
               <span>Download</span>
             </button>
 
@@ -180,7 +180,7 @@ export const GitignorePreview: React.FC<GitignorePreviewProps> = ({
               id="cli-snippet-btn"
               type="button"
               onClick={() => setShowCliModal(true)}
-              className="p-1.5 rounded-md border border-[#333] bg-[#141414] hover:bg-[#1a1a1a] text-[#888] hover:text-[#e5e5e5] transition-colors"
+              className="p-1.5 rounded-md border border-slate-200 dark:border-[#333] bg-slate-100 hover:bg-slate-200 dark:bg-[#141414] dark:hover:bg-[#1a1a1a] text-slate-600 dark:text-[#888] hover:text-slate-900 dark:hover:text-[#e5e5e5] transition-colors"
               title="CLI & Terminal Snippets"
               aria-label="View CLI command integration snippets"
             >
@@ -190,24 +190,24 @@ export const GitignorePreview: React.FC<GitignorePreviewProps> = ({
         </div>
 
         {/* Selected Stack Badges & Controls Strip */}
-        <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[#1f1f1f]">
+        <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-200 dark:border-[#1f1f1f]">
           <div className="flex items-center gap-1.5 flex-wrap">
-            <span className="text-[11px] font-medium text-[#888]">
+            <span className="text-[11px] font-medium text-slate-500 dark:text-[#888]">
               Active ({generated.templatesUsed.length}):
             </span>
             {generated.templatesUsed.length === 0 ? (
-              <span className="text-xs text-[#555] italic">No stacks selected</span>
+              <span className="text-xs text-slate-400 dark:text-[#555] italic">No stacks selected</span>
             ) : (
               generated.templatesUsed.map((template) => (
                 <span
                   key={template.id}
-                  className="inline-flex items-center gap-1 pl-2 pr-1 py-0.5 rounded text-[10px] font-medium bg-[#141414] text-[#e5e5e5] border border-[#262626]"
+                  className="inline-flex items-center gap-1 pl-2 pr-1 py-0.5 rounded text-[10px] font-medium bg-slate-100 dark:bg-[#141414] text-slate-800 dark:text-[#e5e5e5] border border-slate-200 dark:border-[#262626]"
                 >
                   {template.name}
                   <button
                     type="button"
                     onClick={() => onRemoveTemplate(template.id)}
-                    className="p-0.5 text-[#666] hover:text-red-400 rounded"
+                    className="p-0.5 text-slate-400 dark:text-[#666] hover:text-red-500 dark:hover:text-red-400 rounded transition-colors"
                     aria-label={`Remove ${template.name}`}
                   >
                     <X className="w-3 h-3" />
@@ -218,7 +218,7 @@ export const GitignorePreview: React.FC<GitignorePreviewProps> = ({
           </div>
 
           {/* Quick Option Toggles */}
-          <div className="flex items-center gap-3 text-xs text-[#888]">
+          <div className="flex items-center gap-3 text-xs text-slate-600 dark:text-[#888]">
             <label className="inline-flex items-center gap-1.5 cursor-pointer select-none">
               <input
                 type="checkbox"
@@ -263,7 +263,7 @@ export const GitignorePreview: React.FC<GitignorePreviewProps> = ({
       </div>
 
       {/* Editor Content Area */}
-      <div className="flex-1 overflow-hidden relative flex flex-col bg-slate-900 dark:bg-[#0a0a0a] text-slate-100 dark:text-[#abb2bf] font-mono text-xs">
+      <div className="flex-1 overflow-hidden relative flex flex-col bg-slate-50 dark:bg-[#0a0a0a] text-slate-800 dark:text-[#abb2bf] font-mono text-xs transition-colors duration-300">
         {viewMode === 'custom' ? (
           /* Custom Rules Editor */
           <div className="p-4 flex-1 flex flex-col gap-3 bg-white dark:bg-[#0a0a0a] text-slate-900 dark:text-[#e5e5e5]">
@@ -287,15 +287,15 @@ export const GitignorePreview: React.FC<GitignorePreviewProps> = ({
 local-dev.sqlite
 !keep-this-file.txt`}
               rows={12}
-              className="w-full flex-1 p-3 rounded-md bg-slate-50 dark:bg-[#141414] border border-slate-200 dark:border-[#222] text-slate-900 dark:text-[#e5e5e5] font-mono text-xs focus:outline-none focus:ring-1 focus:ring-[#3b82f6] resize-none leading-relaxed"
+              className="w-full flex-1 p-3 rounded-md bg-white dark:bg-[#141414] border border-slate-200 dark:border-[#222] text-slate-900 dark:text-[#e5e5e5] font-mono text-xs focus:outline-none focus:ring-1 focus:ring-[#3b82f6] resize-none leading-relaxed"
               aria-label="Custom .gitignore rules editor"
             />
-            <div className="flex items-center justify-between text-xs text-[#666]">
+            <div className="flex items-center justify-between text-xs text-slate-500 dark:text-[#666]">
               <span>{customRules.split('\n').filter((l) => l.trim()).length} custom rules defined</span>
               <button
                 type="button"
                 onClick={() => onCustomRulesChange('')}
-                className="text-red-400 hover:text-red-300 transition-colors"
+                className="text-red-500 dark:text-red-400 hover:text-red-600 dark:hover:text-red-300 transition-colors"
               >
                 Clear custom rules
               </button>
@@ -306,33 +306,33 @@ local-dev.sqlite
           <textarea
             readOnly
             value={generated.rawText}
-            className="w-full h-full p-4 bg-[#0a0a0a] text-[#abb2bf] font-mono text-xs resize-none focus:outline-none leading-relaxed selection:bg-[#3b82f6]/40 selection:text-white"
+            className="w-full h-full p-4 bg-slate-50 dark:bg-[#0a0a0a] text-slate-800 dark:text-[#abb2bf] font-mono text-xs resize-none focus:outline-none leading-relaxed selection:bg-[#3b82f6]/30 dark:selection:bg-[#3b82f6]/40 selection:text-slate-900 dark:selection:text-white"
             aria-label="Raw .gitignore text view"
           />
         ) : (
           /* Highlighted Preview Area */
-          <div className="flex-1 overflow-y-auto p-4 space-y-0.5 select-text selection:bg-[#3b82f6]/40 max-h-[640px]">
+          <div className="flex-1 overflow-y-auto p-4 space-y-0.5 select-text selection:bg-[#3b82f6]/30 dark:selection:bg-[#3b82f6]/40 max-h-[640px]">
             {tokens.length === 0 ? (
-              <div className="text-center py-16 text-[#555]">
+              <div className="text-center py-16 text-slate-400 dark:text-[#555]">
                 <Code2 className="w-8 h-8 mx-auto mb-2 opacity-50" />
                 <p>Select one or more tech stacks from the left to preview your .gitignore</p>
               </div>
             ) : (
               tokens.map((token) => {
-                let colorClass = 'text-[#abb2bf]';
-                if (token.type === 'header') colorClass = 'text-[#61afef] font-bold';
-                else if (token.type === 'comment') colorClass = 'text-[#5c6370] italic';
-                else if (token.type === 'negation') colorClass = 'text-[#98c379] font-bold';
-                else if (token.type === 'directory') colorClass = 'text-[#e5c07b]';
-                else if (token.type === 'wildcard') colorClass = 'text-[#d19a66]';
+                let colorClass = 'text-slate-800 dark:text-[#abb2bf]';
+                if (token.type === 'header') colorClass = 'text-blue-600 dark:text-[#61afef] font-bold';
+                else if (token.type === 'comment') colorClass = 'text-slate-400 dark:text-[#5c6370] italic';
+                else if (token.type === 'negation') colorClass = 'text-emerald-600 dark:text-[#98c379] font-bold';
+                else if (token.type === 'directory') colorClass = 'text-amber-700 dark:text-[#e5c07b]';
+                else if (token.type === 'wildcard') colorClass = 'text-orange-600 dark:text-[#d19a66]';
 
                 return (
                   <div
                     key={token.lineNumber}
-                    className="group flex items-start gap-3 py-0.5 px-1 rounded hover:bg-[#141414] transition-colors"
+                    className="group flex items-start gap-3 py-0.5 px-1 rounded hover:bg-slate-200/60 dark:hover:bg-[#141414] transition-colors"
                   >
                     {includeLineNumbers && (
-                      <span className="w-8 text-right text-[#444] select-none text-[11px]">
+                      <span className="w-8 text-right text-slate-400 dark:text-[#444] select-none text-[11px]">
                         {token.lineNumber}
                       </span>
                     )}
@@ -344,7 +344,7 @@ local-dev.sqlite
 
                       {token.explanation && (
                         <span
-                          className="opacity-0 group-hover:opacity-100 transition-opacity text-[10px] px-1.5 py-0.5 rounded bg-[#1f1f1f] text-[#888] select-none flex items-center gap-1 cursor-help whitespace-nowrap border border-[#333]"
+                          className="opacity-0 group-hover:opacity-100 transition-opacity text-[10px] px-1.5 py-0.5 rounded bg-slate-200 dark:bg-[#1f1f1f] text-slate-700 dark:text-[#888] select-none flex items-center gap-1 cursor-help whitespace-nowrap border border-slate-300 dark:border-[#333]"
                           title={`${token.explanation.summary}: ${token.explanation.reason}`}
                         >
                           <Info className="w-2.5 h-2.5 text-[#3b82f6]" />
@@ -361,14 +361,14 @@ local-dev.sqlite
       </div>
 
       {/* Footer Info Bar */}
-      <div className="px-4 py-2.5 bg-[#0c0c0c] border-t border-[#1f1f1f] flex items-center justify-between text-xs text-[#888]">
+      <div className="px-4 py-2.5 bg-slate-100 dark:bg-[#0c0c0c] border-t border-slate-200 dark:border-[#1f1f1f] flex items-center justify-between text-xs text-slate-600 dark:text-[#888] transition-colors">
         <div className="flex items-center gap-3">
           <span>
-            Total Rules: <strong className="text-[#e5e5e5]">{generated.ruleCount}</strong>
+            Total Rules: <strong className="text-slate-900 dark:text-[#e5e5e5]">{generated.ruleCount}</strong>
           </span>
           <span>•</span>
           <span>
-            Lines: <strong className="text-[#e5e5e5]">{generated.totalLines}</strong>
+            Lines: <strong className="text-slate-900 dark:text-[#e5e5e5]">{generated.totalLines}</strong>
           </span>
         </div>
 
@@ -385,23 +385,23 @@ local-dev.sqlite
       {/* CLI & Terminal Snippets Dialog */}
       {showCliModal && (
         <div 
-          className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-black/60 dark:bg-black/80 backdrop-blur-xs flex items-center justify-center p-4 transition-colors"
           role="dialog"
           aria-modal="true"
           aria-labelledby="cli-modal-title"
         >
-          <div className="bg-[#0f0f0f] rounded-xl border border-[#1f1f1f] max-w-lg w-full p-5 space-y-4 shadow-2xl text-[#e5e5e5] animate-in fade-in zoom-in-95 duration-150">
+          <div className="bg-white dark:bg-[#0f0f0f] text-slate-900 dark:text-[#e5e5e5] rounded-xl border border-slate-200 dark:border-[#1f1f1f] max-w-lg w-full p-5 space-y-4 shadow-2xl animate-in fade-in zoom-in-95 duration-150">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Terminal className="w-5 h-5 text-[#3b82f6]" />
-                <h3 id="cli-modal-title" className="text-base font-bold text-[#e5e5e5]">
-                  CLI & Terminal Commands
+                <h3 id="cli-modal-title" className="text-base font-bold text-slate-900 dark:text-[#e5e5e5]">
+                  CLI &amp; Terminal Commands
                 </h3>
               </div>
               <button
                 type="button"
                 onClick={() => setShowCliModal(false)}
-                className="p-1.5 text-[#888] hover:text-[#e5e5e5] rounded-md hover:bg-[#222]"
+                className="p-1.5 text-slate-400 hover:text-slate-700 dark:text-[#888] dark:hover:text-[#e5e5e5] rounded-md hover:bg-slate-100 dark:hover:bg-[#222]"
                 aria-label="Close modal"
               >
                 <X className="w-5 h-5" />
@@ -410,38 +410,38 @@ local-dev.sqlite
 
             <div className="space-y-3 text-xs">
               <div className="space-y-1">
-                <span className="font-semibold text-[#888]">
+                <span className="font-semibold text-slate-600 dark:text-[#888]">
                   1. Download directly to current project directory:
                 </span>
-                <div className="p-2.5 rounded-md bg-[#000] border border-[#222] text-[#3b82f6] font-mono overflow-x-auto flex items-center justify-between gap-2">
+                <div className="p-2.5 rounded-md bg-slate-100 dark:bg-[#000] border border-slate-200 dark:border-[#222] text-blue-600 dark:text-[#3b82f6] font-mono overflow-x-auto flex items-center justify-between gap-2">
                   <code>curl -sL &quot;https://gitignore.io/api/node,macos,visualstudiocode&quot; -o .gitignore</code>
                 </div>
               </div>
 
               <div className="space-y-1">
-                <span className="font-semibold text-[#888]">
+                <span className="font-semibold text-slate-600 dark:text-[#888]">
                   2. Untrack already committed ignored files:
                 </span>
-                <div className="p-2.5 rounded-md bg-[#000] border border-[#222] text-[#3b82f6] font-mono overflow-x-auto">
-                  <code>git rm -r --cached . && git add . && git commit -m &quot;Clean ignored files&quot;</code>
+                <div className="p-2.5 rounded-md bg-slate-100 dark:bg-[#000] border border-slate-200 dark:border-[#222] text-blue-600 dark:text-[#3b82f6] font-mono overflow-x-auto">
+                  <code>git rm -r --cached . &amp;&amp; git add . &amp;&amp; git commit -m &quot;Clean ignored files&quot;</code>
                 </div>
               </div>
 
               <div className="space-y-1">
-                <span className="font-semibold text-[#888]">
+                <span className="font-semibold text-slate-600 dark:text-[#888]">
                   3. Verify why a file is ignored:
                 </span>
-                <div className="p-2.5 rounded-md bg-[#000] border border-[#222] text-[#3b82f6] font-mono overflow-x-auto">
+                <div className="p-2.5 rounded-md bg-slate-100 dark:bg-[#000] border border-slate-200 dark:border-[#222] text-blue-600 dark:text-[#3b82f6] font-mono overflow-x-auto">
                   <code>git check-ignore -v path/to/file</code>
                 </div>
               </div>
             </div>
 
-            <div className="pt-2 border-t border-[#1f1f1f] flex justify-end">
+            <div className="pt-2 border-t border-slate-200 dark:border-[#1f1f1f] flex justify-end">
               <button
                 type="button"
                 onClick={() => setShowCliModal(false)}
-                className="px-4 py-2 rounded-md text-xs font-semibold bg-[#1a1a1a] hover:bg-[#222] text-[#e5e5e5] border border-[#333]"
+                className="px-4 py-2 rounded-md text-xs font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-[#1a1a1a] dark:hover:bg-[#222] text-slate-800 dark:text-[#e5e5e5] border border-slate-200 dark:border-[#333]"
               >
                 Done
               </button>

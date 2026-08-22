@@ -44,7 +44,7 @@ export function generateGitignore(
   if (options.includeComments) {
     outputSections.push(
       `# ==========================================================================\n` +
-      `# Generated with .gitignore Generator (https://ai.studio/build)\n` +
+      `# Generated with .gitignore Generator (https://ignoregen.vercel.app)\n` +
       `# Selected Stacks: ${templatesToProcess.map((t) => t.name).join(', ') || 'Custom Rules Only'}\n` +
       `# Generated on: ${new Date().toISOString().split('T')[0]}\n` +
       `# ==========================================================================`

@@ -80,7 +80,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Center Quick Search Trigger */}
-        <div className="hidden lg:flex items-center relative w-96">
+        {/** <div className="hidden lg:flex items-center relative w-96">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 dark:text-[#555]">
             <Search className="w-4 h-4" />
           </div>
@@ -98,7 +98,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               ⌘K
             </span>
           </div>
-        </div>
+        </div> */}
 
         {/* Right Navigation Actions */}
         <div className="flex items-center space-x-2 sm:space-x-3">
@@ -168,23 +168,25 @@ export const Navbar: React.FC<NavbarProps> = ({
             {copiedLink ? <Check className="w-4 h-4 text-emerald-500" /> : <Share2 className="w-4 h-4" />}
           </button>
 
-          {/* Theme switcher */}
+          {/* Theme switcher with fixed width and smooth transition */}
           <button
             id="nav-theme-toggle-btn"
             type="button"
             onClick={cycleTheme}
-            className="p-1.5 text-slate-600 dark:text-[#888] hover:text-slate-900 dark:hover:text-[#e5e5e5] bg-white dark:bg-[#141414] border border-slate-200 dark:border-[#333] hover:bg-slate-100 dark:hover:bg-[#1a1a1a] rounded-md transition-all active:scale-95 flex items-center justify-center gap-1.5"
+            className="w-[88px] sm:w-[94px] h-8 p-1.5 text-slate-600 dark:text-[#888] hover:text-slate-900 dark:hover:text-[#e5e5e5] bg-white dark:bg-[#141414] border border-slate-200 dark:border-[#333] hover:bg-slate-100 dark:hover:bg-[#1a1a1a] rounded-md transition-all active:scale-95 flex items-center justify-center gap-1.5 shrink-0"
             title={`Current theme preference: ${theme}. Click to toggle (system -> dark -> light -> system).`}
             aria-label="Toggle theme mode"
           >
-            {theme === 'dark' ? (
-              <Moon className="w-4 h-4 text-[#3b82f6] transition-transform duration-300 rotate-0" />
-            ) : theme === 'light' ? (
-              <Sun className="w-4 h-4 text-amber-500 transition-transform duration-300 rotate-0" />
-            ) : (
-              <Laptop className="w-4 h-4 text-slate-500 dark:text-[#888] transition-transform duration-300" />
-            )}
-            <span className="hidden sm:inline text-[11px] font-mono capitalize text-slate-600 dark:text-[#888]">
+            <span className="transition-transform duration-300 transform scale-100">
+              {theme === 'dark' ? (
+                <Moon className="w-4 h-4 text-[#3b82f6] animate-in spin-in-90 duration-200" />
+              ) : theme === 'light' ? (
+                <Sun className="w-4 h-4 text-amber-500 animate-in spin-in-90 duration-200" />
+              ) : (
+                <Laptop className="w-4 h-4 text-slate-500 dark:text-[#888] animate-in fade-in duration-200" />
+              )}
+            </span>
+            <span className="hidden sm:inline text-[11px] font-mono capitalize text-slate-600 dark:text-[#888] w-11 text-left">
               {theme}
             </span>
           </button>

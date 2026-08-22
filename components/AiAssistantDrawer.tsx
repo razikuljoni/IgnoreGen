@@ -76,23 +76,23 @@ export const AiAssistantDrawer: React.FC<AiAssistantDrawerProps> = ({
 
   return (
     <div 
-      className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-end"
+      className="fixed inset-0 z-50 bg-black/60 dark:bg-black/80 backdrop-blur-xs flex items-center justify-end transition-colors duration-300"
       role="dialog"
       aria-modal="true"
       aria-labelledby="ai-drawer-title"
     >
-      <div className="bg-[#0f0f0f] text-[#e5e5e5] border-l border-[#1f1f1f] w-full max-w-xl h-full flex flex-col shadow-2xl animate-in slide-in-from-right duration-200">
+      <div className="bg-white dark:bg-[#0f0f0f] text-slate-900 dark:text-[#e5e5e5] border-l border-slate-200 dark:border-[#1f1f1f] w-full max-w-xl h-full flex flex-col shadow-2xl animate-in slide-in-from-right duration-200">
         {/* Drawer Header */}
-        <div className="p-4 sm:p-5 border-b border-[#1f1f1f] flex items-center justify-between bg-[#141414]">
+        <div className="p-4 sm:p-5 border-b border-slate-200 dark:border-[#1f1f1f] flex items-center justify-between bg-slate-50 dark:bg-[#141414]">
           <div className="flex items-center gap-2.5">
             <div className="w-9 h-9 rounded-lg bg-[#3b82f6] text-white flex items-center justify-center shadow-md shadow-blue-900/30">
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
-              <h3 id="ai-drawer-title" className="text-base font-bold text-[#e5e5e5] flex items-center gap-1.5">
+              <h3 id="ai-drawer-title" className="text-base font-bold text-slate-900 dark:text-[#e5e5e5] flex items-center gap-1.5">
                 AI Stack Analyzer
               </h3>
-              <p className="text-xs text-[#888]">
+              <p className="text-xs text-slate-500 dark:text-[#888]">
                 Describe your project or paste directory output for smart recommendations
               </p>
             </div>
@@ -101,7 +101,7 @@ export const AiAssistantDrawer: React.FC<AiAssistantDrawerProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 text-[#888] hover:text-[#e5e5e5] rounded-md hover:bg-[#1a1a1a]"
+            className="p-1.5 text-slate-400 hover:text-slate-700 dark:text-[#888] dark:hover:text-[#e5e5e5] rounded-md hover:bg-slate-200 dark:hover:bg-[#1a1a1a]"
             aria-label="Close drawer"
           >
             <X className="w-5 h-5" />

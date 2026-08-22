@@ -30,45 +30,45 @@ interface StackSelectorProps {
 // Get 2-letter badge code and theme color
 const getStackBadge = (id: string, name: string, category: string) => {
   const codeMap: Record<string, { code: string; color: string }> = {
-    'node-js': { code: 'JS', color: 'text-[#f7df1e]' },
-    'typescript': { code: 'TS', color: 'text-[#3178c6]' },
-    'python': { code: 'PY', color: 'text-[#4ea94b]' },
-    'react': { code: 'RX', color: 'text-[#61dafb]' },
-    'nextjs': { code: 'NX', color: 'text-[#ffffff]' },
-    'rust': { code: 'RS', color: 'text-[#dea584]' },
-    'go': { code: 'GO', color: 'text-[#00add8]' },
-    'java': { code: 'JV', color: 'text-[#f89820]' },
-    'cpp': { code: 'C+', color: 'text-[#659ad2]' },
-    'csharp': { code: 'C#', color: 'text-[#9b4993]' },
-    'php': { code: 'PH', color: 'text-[#8892bf]' },
-    'ruby': { code: 'RB', color: 'text-[#cc342d]' },
-    'swift': { code: 'SW', color: 'text-[#fa7343]' },
-    'kotlin': { code: 'KT', color: 'text-[#7f52ff]' },
-    'dart': { code: 'DT', color: 'text-[#0175c2]' },
-    'docker': { code: 'DK', color: 'text-[#2496ed]' },
-    'vscode': { code: 'VS', color: 'text-[#007acc]' },
-    'jetbrains': { code: 'JT', color: 'text-[#ea4335]' },
-    'macos': { code: 'OS', color: 'text-[#ffffff]' },
-    'windows': { code: 'WN', color: 'text-[#0078d7]' },
-    'linux': { code: 'LX', color: 'text-[#fcc624]' },
-    'env-files': { code: 'EV', color: 'text-[#ef4444]' },
-    'vue': { code: 'VU', color: 'text-[#42b883]' },
-    'angular': { code: 'NG', color: 'text-[#dd0031]' },
-    'svelte': { code: 'SV', color: 'text-[#ff3e00]' },
-    'astro': { code: 'AS', color: 'text-[#ff5d01]' },
-    'tailwind': { code: 'TW', color: 'text-[#38bdf8]' },
-    'django': { code: 'DJ', color: 'text-[#092e20]' },
-    'fastapi': { code: 'FA', color: 'text-[#05998b]' },
-    'flask': { code: 'FL', color: 'text-[#ffffff]' },
-    'flutter': { code: 'FL', color: 'text-[#54c5f8]' },
-    'react-native': { code: 'RN', color: 'text-[#61dafb]' },
-    'unity': { code: 'UN', color: 'text-[#ffffff]' },
-    'unreal-engine': { code: 'UE', color: 'text-[#0e1128]' },
-    'terraform': { code: 'TF', color: 'text-[#844fba]' },
-    'prisma': { code: 'PR', color: 'text-[#2d3748]' },
-    'pnpm': { code: 'PN', color: 'text-[#f69220]' },
-    'yarn': { code: 'YN', color: 'text-[#2c8ebb]' },
-    'bun': { code: 'BN', color: 'text-[#fbf0df]' },
+    'node-js': { code: 'JS', color: 'text-amber-600 dark:text-[#f7df1e]' },
+    'typescript': { code: 'TS', color: 'text-blue-600 dark:text-[#3178c6]' },
+    'python': { code: 'PY', color: 'text-emerald-600 dark:text-[#4ea94b]' },
+    'react': { code: 'RX', color: 'text-sky-600 dark:text-[#61dafb]' },
+    'nextjs': { code: 'NX', color: 'text-slate-900 dark:text-white' },
+    'rust': { code: 'RS', color: 'text-amber-700 dark:text-[#dea584]' },
+    'go': { code: 'GO', color: 'text-cyan-600 dark:text-[#00add8]' },
+    'java': { code: 'JV', color: 'text-orange-600 dark:text-[#f89820]' },
+    'cpp': { code: 'C+', color: 'text-blue-700 dark:text-[#659ad2]' },
+    'csharp': { code: 'C#', color: 'text-purple-700 dark:text-[#9b4993]' },
+    'php': { code: 'PH', color: 'text-indigo-600 dark:text-[#8892bf]' },
+    'ruby': { code: 'RB', color: 'text-red-600 dark:text-[#cc342d]' },
+    'swift': { code: 'SW', color: 'text-orange-600 dark:text-[#fa7343]' },
+    'kotlin': { code: 'KT', color: 'text-purple-600 dark:text-[#7f52ff]' },
+    'dart': { code: 'DT', color: 'text-sky-600 dark:text-[#0175c2]' },
+    'docker': { code: 'DK', color: 'text-blue-600 dark:text-[#2496ed]' },
+    'vscode': { code: 'VS', color: 'text-blue-600 dark:text-[#007acc]' },
+    'jetbrains': { code: 'JT', color: 'text-red-600 dark:text-[#ea4335]' },
+    'macos': { code: 'OS', color: 'text-slate-900 dark:text-white' },
+    'windows': { code: 'WN', color: 'text-blue-600 dark:text-[#0078d7]' },
+    'linux': { code: 'LX', color: 'text-amber-600 dark:text-[#fcc624]' },
+    'env-files': { code: 'EV', color: 'text-red-600 dark:text-[#ef4444]' },
+    'vue': { code: 'VU', color: 'text-emerald-600 dark:text-[#42b883]' },
+    'angular': { code: 'NG', color: 'text-red-600 dark:text-[#dd0031]' },
+    'svelte': { code: 'SV', color: 'text-orange-600 dark:text-[#ff3e00]' },
+    'astro': { code: 'AS', color: 'text-orange-600 dark:text-[#ff5d01]' },
+    'tailwind': { code: 'TW', color: 'text-sky-600 dark:text-[#38bdf8]' },
+    'django': { code: 'DJ', color: 'text-emerald-800 dark:text-[#4ea94b]' },
+    'fastapi': { code: 'FA', color: 'text-teal-600 dark:text-[#05998b]' },
+    'flask': { code: 'FL', color: 'text-slate-900 dark:text-white' },
+    'flutter': { code: 'FL', color: 'text-sky-600 dark:text-[#54c5f8]' },
+    'react-native': { code: 'RN', color: 'text-sky-600 dark:text-[#61dafb]' },
+    'unity': { code: 'UN', color: 'text-slate-900 dark:text-white' },
+    'unreal-engine': { code: 'UE', color: 'text-slate-900 dark:text-sky-400' },
+    'terraform': { code: 'TF', color: 'text-purple-600 dark:text-[#844fba]' },
+    'prisma': { code: 'PR', color: 'text-slate-800 dark:text-slate-300' },
+    'pnpm': { code: 'PN', color: 'text-amber-600 dark:text-[#f69220]' },
+    'yarn': { code: 'YN', color: 'text-sky-700 dark:text-[#2c8ebb]' },
+    'bun': { code: 'BN', color: 'text-amber-800 dark:text-[#fbf0df]' },
   };
 
   if (codeMap[id]) return codeMap[id];
@@ -333,7 +333,7 @@ export const StackSelector: React.FC<StackSelectorProps> = ({
                     <div className="flex items-start justify-between gap-2 mb-2">
                       <div className="flex items-center gap-2">
                         {/* 2-Letter Tech Badge */}
-                        <div className={`p-1.5 px-2 bg-slate-900 dark:bg-[#000] rounded-md border border-slate-700 dark:border-[#333] ${badge.color} font-mono font-bold text-xs`}>
+                        <div className={`p-1.5 px-2 bg-slate-100 dark:bg-[#000] rounded-md border border-slate-200 dark:border-[#333] ${badge.color} font-mono font-bold text-xs shadow-xs`}>
                           {badge.code}
                         </div>
                         <div>
@@ -361,7 +361,7 @@ export const StackSelector: React.FC<StackSelectorProps> = ({
                         checked={isSelected}
                         onChange={() => {}}
                         aria-label={`Select ${template.name}`}
-                        className="accent-[#3b82f6] h-4 w-4 rounded cursor-pointer"
+                        className="accent-[#3b82f6] h-4 w-4 rounded cursor-pointer ring-offset-white dark:ring-offset-slate-900 border-slate-300 dark:border-slate-700"
                       />
                     </div>
 
@@ -389,7 +389,7 @@ export const StackSelector: React.FC<StackSelectorProps> = ({
                         e.stopPropagation();
                         setPreviewTemplate(template);
                       }}
-                      className="p-1 text-[#666] hover:text-[#e5e5e5] rounded hover:bg-[#222] transition-colors"
+                      className="p-1 text-slate-400 hover:text-slate-700 dark:text-[#666] dark:hover:text-[#e5e5e5] rounded hover:bg-slate-200 dark:hover:bg-[#222] transition-colors"
                       title="Inspect template rules"
                       aria-label={`Inspect ${template.name} gitignore rules`}
                     >
@@ -406,37 +406,37 @@ export const StackSelector: React.FC<StackSelectorProps> = ({
       {/* Template Quick View Modal */}
       {previewTemplate && (
         <div 
-          className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-black/60 dark:bg-black/80 backdrop-blur-xs flex items-center justify-center p-4 transition-colors"
           role="dialog"
           aria-modal="true"
           aria-labelledby="template-preview-title"
         >
-          <div className="bg-[#0f0f0f] text-[#e5e5e5] rounded-xl border border-[#1f1f1f] max-w-lg w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
-            <div className="p-4 border-b border-[#1f1f1f] flex items-center justify-between bg-[#141414]">
+          <div className="bg-white dark:bg-[#0f0f0f] text-slate-900 dark:text-[#e5e5e5] rounded-xl border border-slate-200 dark:border-[#1f1f1f] max-w-lg w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+            <div className="p-4 border-b border-slate-200 dark:border-[#1f1f1f] flex items-center justify-between bg-slate-50 dark:bg-[#141414]">
               <div>
-                <h3 id="template-preview-title" className="text-base font-bold text-[#e5e5e5]">
+                <h3 id="template-preview-title" className="text-base font-bold text-slate-900 dark:text-[#e5e5e5]">
                   {previewTemplate.name}
                 </h3>
-                <p className="text-xs text-[#888] mt-0.5">
+                <p className="text-xs text-slate-500 dark:text-[#888] mt-0.5">
                   Standard template patterns included in this module
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setPreviewTemplate(null)}
-                className="p-1.5 text-[#888] hover:text-white rounded-md hover:bg-[#222]"
+                className="p-1.5 text-slate-400 hover:text-slate-700 dark:text-[#888] dark:hover:text-white rounded-md hover:bg-slate-100 dark:hover:bg-[#222]"
                 aria-label="Close preview"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="p-4 overflow-y-auto flex-1 font-mono text-xs text-[#abb2bf] bg-[#0a0a0a] leading-relaxed whitespace-pre">
+            <div className="p-4 overflow-y-auto flex-1 font-mono text-xs text-slate-800 dark:text-[#abb2bf] bg-slate-50 dark:bg-[#0a0a0a] leading-relaxed whitespace-pre">
               {previewTemplate.content}
             </div>
 
-            <div className="p-4 border-t border-[#1f1f1f] flex items-center justify-between bg-[#141414]">
-              <span className="text-xs text-[#888]">
+            <div className="p-4 border-t border-slate-200 dark:border-[#1f1f1f] flex items-center justify-between bg-slate-50 dark:bg-[#141414]">
+              <span className="text-xs text-slate-500 dark:text-[#888]">
                 {previewTemplate.content.split('\n').filter((l) => l.trim() && !l.startsWith('#')).length} rules in this module
               </span>
               <button
