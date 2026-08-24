@@ -76,7 +76,7 @@ export const AiAssistantDrawer: React.FC<AiAssistantDrawerProps> = ({
 
   return (
     <div 
-      className="fixed inset-0 z-50 bg-black/60 dark:bg-black/80 backdrop-blur-xs flex items-center justify-end transition-colors duration-300"
+      className="fixed inset-0 z-50 bg-black/60 dark:bg-black/80 backdrop-blur-xs flex items-center justify-end animate-in fade-in duration-200"
       role="dialog"
       aria-modal="true"
       aria-labelledby="ai-drawer-title"
@@ -112,23 +112,23 @@ export const AiAssistantDrawer: React.FC<AiAssistantDrawerProps> = ({
         <div className="p-5 overflow-y-auto flex-1 space-y-4 text-xs">
           <form onSubmit={handleAnalyze} className="space-y-3">
             <div className="space-y-1.5">
-              <label className="font-semibold text-[#e5e5e5] flex items-center justify-between">
+              <label className="font-semibold text-slate-900 dark:text-[#e5e5e5] flex items-center justify-between">
                 <span>Describe your tech stack:</span>
-                <span className="text-[11px] font-normal text-[#888]">e.g. Next.js 15, Prisma, Rust worker, Docker, macOS</span>
+                <span className="text-[11px] font-normal text-slate-500 dark:text-[#888]">e.g. Next.js 15, Prisma, Rust worker, Docker, macOS</span>
               </label>
               <textarea
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
                 placeholder="I'm building a monorepo with Next.js 15, FastAPI Python backend, Tailwind, Docker Compose, on macOS and Linux."
                 rows={3}
-                className="w-full p-3 rounded-md border border-[#222] bg-[#0c0c0c] text-[#e5e5e5] text-xs focus:ring-1 focus:ring-[#3b82f6] focus:outline-none placeholder:text-[#555]"
+                className="w-full p-3 rounded-md border border-slate-200 dark:border-[#222] bg-white dark:bg-[#0c0c0c] text-slate-900 dark:text-[#e5e5e5] text-xs focus:ring-1 focus:ring-[#3b82f6] focus:outline-none placeholder:text-slate-400 dark:placeholder:text-[#555]"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="font-semibold text-[#e5e5e5] flex items-center justify-between">
+              <label className="font-semibold text-slate-900 dark:text-[#e5e5e5] flex items-center justify-between">
                 <span>Or paste file tree / directory list (optional):</span>
-                <span className="text-[11px] font-normal text-[#888]">e.g. tree output or package list</span>
+                <span className="text-[11px] font-normal text-slate-500 dark:text-[#888]">e.g. tree output or package list</span>
               </label>
               <textarea
                 value={repoTree}
@@ -142,7 +142,7 @@ backend/
 Dockerfile
 docker-compose.yml`}
                 rows={4}
-                className="w-full p-3 rounded-md border border-[#222] bg-[#0c0c0c] text-[#e5e5e5] font-mono text-[11px] focus:ring-1 focus:ring-[#3b82f6] focus:outline-none placeholder:text-[#555]"
+                className="w-full p-3 rounded-md border border-slate-200 dark:border-[#222] bg-white dark:bg-[#0c0c0c] text-slate-900 dark:text-[#e5e5e5] font-mono text-[11px] focus:ring-1 focus:ring-[#3b82f6] focus:outline-none placeholder:text-slate-400 dark:placeholder:text-[#555]"
               />
             </div>
 
@@ -175,19 +175,19 @@ docker-compose.yml`}
 
           {/* Results display */}
           {result && (
-            <div className="p-4 rounded-lg bg-[#141414] border border-[#222] space-y-4 animate-in fade-in duration-150">
+            <div className="p-4 rounded-lg bg-slate-50 dark:bg-[#141414] border border-slate-200 dark:border-[#222] space-y-4 animate-in fade-in duration-150">
               <div className="space-y-1">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-[#3b82f6]">
                   Detected Architecture
                 </span>
-                <p className="font-semibold text-[#e5e5e5] text-xs">
+                <p className="font-semibold text-slate-900 dark:text-[#e5e5e5] text-xs">
                   {result.detectedStackSummary}
                 </p>
               </div>
 
               {/* Recommended templates */}
               <div className="space-y-1.5">
-                <span className="text-xs font-semibold text-[#bbb] flex items-center gap-1.5">
+                <span className="text-xs font-semibold text-slate-600 dark:text-[#bbb] flex items-center gap-1.5">
                   <Layers className="w-3.5 h-3.5 text-[#3b82f6]" />
                   Recommended Standard Templates ({result.recommendedTemplateIds.length}):
                 </span>
@@ -195,7 +195,7 @@ docker-compose.yml`}
                   {result.recommendedTemplateIds.map((id) => (
                     <span
                       key={id}
-                      className="px-2 py-0.5 rounded bg-[#0c0c0c] text-[#3b82f6] font-mono text-[11px] border border-[#262626]"
+                      className="px-2 py-0.5 rounded bg-white dark:bg-[#0c0c0c] text-[#3b82f6] font-mono text-[11px] border border-slate-200 dark:border-[#262626]"
                     >
                       {id}
                     </span>
@@ -206,11 +206,11 @@ docker-compose.yml`}
               {/* Custom Tailored Rules */}
               {result.customRules && (
                 <div className="space-y-1.5">
-                  <span className="text-xs font-semibold text-[#bbb] flex items-center gap-1.5">
+                  <span className="text-xs font-semibold text-slate-600 dark:text-[#bbb] flex items-center gap-1.5">
                     <FileCode className="w-3.5 h-3.5 text-[#3b82f6]" />
                     Custom Tailored Ignore Rules:
                   </span>
-                  <pre className="p-2.5 rounded-md bg-[#000] border border-[#222] text-[#3b82f6] font-mono text-[11px] overflow-x-auto max-h-36">
+                  <pre className="p-2.5 rounded-md bg-slate-100 dark:bg-black border border-slate-200 dark:border-[#222] text-[#3b82f6] font-mono text-[11px] overflow-x-auto max-h-36">
                     {result.customRules}
                   </pre>
                 </div>
@@ -219,11 +219,11 @@ docker-compose.yml`}
               {/* Security Insights */}
               {result.securityInsights?.length > 0 && (
                 <div className="space-y-1.5">
-                  <span className="text-xs font-semibold text-[#bbb] flex items-center gap-1.5">
+                  <span className="text-xs font-semibold text-slate-600 dark:text-[#bbb] flex items-center gap-1.5">
                     <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
                     Security &amp; Git Advice:
                   </span>
-                  <ul className="space-y-1 list-disc list-inside text-[#888] text-[11px]">
+                  <ul className="space-y-1 list-disc list-inside text-slate-500 dark:text-[#888] text-[11px]">
                     {result.securityInsights.map((insight, idx) => (
                       <li key={idx}>{insight}</li>
                     ))}

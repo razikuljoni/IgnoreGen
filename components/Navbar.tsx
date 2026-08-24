@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import pkg from '../package.json';
 import { 
   Search, 
   BookOpen, 
@@ -70,7 +71,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 IgnoreGen<span className="text-[#3b82f6]">.io</span>
               </h1>
               <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-medium bg-slate-100 dark:bg-[#1a1a1a] text-slate-600 dark:text-[#888] border border-slate-200 dark:border-[#333]">
-                v2.4
+                v{pkg.version}
               </span>
             </div>
             <p className="hidden md:block text-[11px] text-slate-500 dark:text-[#888]">
@@ -125,11 +126,9 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             <Bookmark className="w-3.5 h-3.5 text-[#3b82f6]" />
             <span className="hidden md:inline">Presets</span>
-            {selectedCount > 0 && (
-              <span className="inline-flex items-center justify-center px-1.5 py-0.2 rounded text-[9px] font-bold bg-[#3b82f6] text-white">
-                {selectedCount}
-              </span>
-            )}
+            <span className="inline-flex items-center justify-center px-1.5 py-0.2 rounded text-[9px] font-bold bg-[#3b82f6] text-white">
+              {selectedCount}
+            </span>
           </button>
 
           {/* Documentation */}

@@ -190,7 +190,7 @@ export const GitignorePreview: React.FC<GitignorePreviewProps> = ({
         </div>
 
         {/* Selected Stack Badges & Controls Strip */}
-        <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-200 dark:border-[#1f1f1f]">
+        <div className="py-2 border-t border-slate-200 dark:border-[#1f1f1f]">
           <div className="flex items-center gap-1.5 flex-wrap">
             <span className="text-[11px] font-medium text-slate-500 dark:text-[#888]">
               Active ({generated.templatesUsed.length}):
@@ -218,13 +218,13 @@ export const GitignorePreview: React.FC<GitignorePreviewProps> = ({
           </div>
 
           {/* Quick Option Toggles */}
-          <div className="flex items-center gap-3 text-xs text-slate-600 dark:text-[#888]">
+          <div className="flex items-center gap-3 pt-2 -mb-4 text-xs text-slate-600 dark:text-[#888]">
             <label className="inline-flex items-center gap-1.5 cursor-pointer select-none">
               <input
                 type="checkbox"
                 checked={includeComments}
                 onChange={onToggleComments}
-                className="w-3.5 h-3.5 accent-[#3b82f6] rounded"
+                className="ig-checkbox"
               />
               <span>Comments</span>
             </label>
@@ -234,7 +234,7 @@ export const GitignorePreview: React.FC<GitignorePreviewProps> = ({
                 type="checkbox"
                 checked={autoDeduplicate}
                 onChange={onToggleDeduplicate}
-                className="w-3.5 h-3.5 accent-[#3b82f6] rounded"
+                className="ig-checkbox"
               />
               <span>Deduplicate</span>
             </label>
@@ -244,7 +244,7 @@ export const GitignorePreview: React.FC<GitignorePreviewProps> = ({
                 type="checkbox"
                 checked={sortSections}
                 onChange={onToggleSort}
-                className="w-3.5 h-3.5 accent-[#3b82f6] rounded"
+                className="ig-checkbox"
               />
               <span>Sort A-Z</span>
             </label>
@@ -254,7 +254,7 @@ export const GitignorePreview: React.FC<GitignorePreviewProps> = ({
                 type="checkbox"
                 checked={includeLineNumbers}
                 onChange={onToggleLineNumbers}
-                className="w-3.5 h-3.5 accent-[#3b82f6] rounded"
+                className="ig-checkbox"
               />
               <span>Line Numbers</span>
             </label>
@@ -385,7 +385,7 @@ local-dev.sqlite
       {/* CLI & Terminal Snippets Dialog */}
       {showCliModal && (
         <div 
-          className="fixed inset-0 z-50 bg-black/60 dark:bg-black/80 backdrop-blur-xs flex items-center justify-center p-4 transition-colors"
+          className="fixed inset-0 z-50 bg-black/60 dark:bg-black/80 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200"
           role="dialog"
           aria-modal="true"
           aria-labelledby="cli-modal-title"
