@@ -49,6 +49,9 @@ export default function Home() {
         preferences.theme === 'dark' ||
         (preferences.theme === 'system' && mediaQuery.matches);
 
+      root.classList.add('theme-transitioning');
+      window.setTimeout(() => root.classList.remove('theme-transitioning'), 400);
+
       if (isDark) {
         root.classList.add('dark');
         root.classList.remove('light');

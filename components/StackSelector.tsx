@@ -121,9 +121,18 @@ export const StackSelector: React.FC<StackSelectorProps> = ({
     onSelectMultiple(preset.templateIds, true);
   };
 
-  const handleSelectAllFiltered = () => {
-    const newIds = Array.from(new Set([...selectedIds, ...filteredTemplates.map((t) => t.id)]));
-    onSelectMultiple(newIds, true);
+  const filteredIds = useMemo(() => filteredTemplates.map((t) => t.id), [filteredTemplates]);
+  const allVisibleSelected = filteredIds.length > 0 && filteredIds.every((id) => selectedIds.includes(id));
+
+  const handleToggleAllFiltered = () => {
+    if (allVisibleSelected) {
+      const visibleSet = new Set(filteredIds);
+      const remaining = selectedIds.filter((id) => !visibleSet.has(id));
+      onSelectMultiple(remaining, true);
+    } else {
+      const merged = Array.from(new Set([...selectedIds, ...filteredIds]));
+      onSelectMultiple(merged, true);
+    }
   };
 
   const handleSelectRecommended = () => {
@@ -149,7 +158,7 @@ export const StackSelector: React.FC<StackSelectorProps> = ({
             </p>
           </div>
 
-          <div className="flex items-center gap-2 flex-wrap">
+          <div className="flex flex-col items-end gap-2 flex-wrap">
             <button
               id="select-recommended-btn"
               type="button"
@@ -158,16 +167,20 @@ export const StackSelector: React.FC<StackSelectorProps> = ({
             >
               ⭐ Recommended Defaults
             </button>
-            {selectedCount > 0 && (
               <button
                 id="clear-all-stacks-btn"
                 type="button"
                 onClick={onClearAll}
-                className="text-xs font-medium px-2.5 py-1 rounded text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 border border-transparent hover:border-red-200 dark:hover:border-red-900/50 transition-all focus:outline-none"
+                disabled={!selectedCount}
+                className={`text-xs font-medium px-2.5 py-1 rounded transition-all focus:outline-none ${
+                  !selectedCount
+                    ? 'text-slate-300 dark:text-[#444] border border-slate-200 dark:border-[#222] cursor-not-allowed opacity-60'
+                    : 'text-red-500 border border-red-200 dark:border-red-900/50 hover:bg-red-50 dark:hover:bg-red-950/40'
+                }`}
               >
                 Clear all ({selectedCount})
               </button>
-            )}
+       
           </div>
         </div>
 
@@ -267,13 +280,24 @@ export const StackSelector: React.FC<StackSelectorProps> = ({
 
         {filteredTemplates.length > 0 && (
           <button
-            id="select-all-filtered-btn"
+            id="toggle-all-filtered-btn"
             type="button"
-            onClick={handleSelectAllFiltered}
-            className="text-xs font-medium text-[#3b82f6] hover:underline flex items-center gap-1"
+            onClick={handleToggleAllFiltered}
+            className={`text-xs font-medium hover:underline flex items-center gap-1 transition-colors ${
+              allVisibleSelected ? 'text-red-500 hover:text-red-600 dark:text-red-400' : 'text-[#3b82f6]'
+            }`}
           >
-            <CheckCheck className="w-3.5 h-3.5" />
-            Select all visible
+            {allVisibleSelected ? (
+              <>
+                <X className="w-3.5 h-3.5" />
+                Unselect all visible
+              </>
+            ) : (
+              <>
+                <CheckCheck className="w-3.5 h-3.5" />
+                Select all visible
+              </>
+            )}
           </button>
         )}
       </div>
@@ -282,13 +306,13 @@ export const StackSelector: React.FC<StackSelectorProps> = ({
       <div className="flex-1 overflow-y-auto p-4 space-y-2.5 max-h-[640px] focus:outline-none">
         {filteredTemplates.length === 0 ? (
           <div className="text-center py-14 px-4 space-y-3">
-            <div className="w-12 h-12 rounded-full bg-[#141414] border border-[#222] flex items-center justify-center mx-auto text-[#555]">
+            <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-[#141414] border border-slate-200 dark:border-[#222] flex items-center justify-center mx-auto text-slate-400 dark:text-[#555]">
               <Search className="w-6 h-6" />
             </div>
-            <h3 className="text-sm font-semibold text-[#e5e5e5]">
+            <h3 className="text-sm font-semibold text-slate-900 dark:text-[#e5e5e5]">
               No matching stacks found
             </h3>
-            <p className="text-xs text-[#888] max-w-sm mx-auto">
+            <p className="text-xs text-slate-500 dark:text-[#888] max-w-sm mx-auto">
               Try searching with another keyword (e.g. &ldquo;Node&rdquo;, &ldquo;React&rdquo;, &ldquo;VS Code&rdquo;) or check our AI Assistant to generate custom rules.
             </p>
             <button
@@ -361,7 +385,7 @@ export const StackSelector: React.FC<StackSelectorProps> = ({
                         checked={isSelected}
                         onChange={() => {}}
                         aria-label={`Select ${template.name}`}
-                        className="accent-[#3b82f6] h-4 w-4 rounded cursor-pointer ring-offset-white dark:ring-offset-slate-900 border-slate-300 dark:border-slate-700"
+                        className="ig-checkbox"
                       />
                     </div>
 
@@ -406,7 +430,7 @@ export const StackSelector: React.FC<StackSelectorProps> = ({
       {/* Template Quick View Modal */}
       {previewTemplate && (
         <div 
-          className="fixed inset-0 z-50 bg-black/60 dark:bg-black/80 backdrop-blur-xs flex items-center justify-center p-4 transition-colors"
+          className="fixed inset-0 z-50 bg-black/60 dark:bg-black/80 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200"
           role="dialog"
           aria-modal="true"
           aria-labelledby="template-preview-title"

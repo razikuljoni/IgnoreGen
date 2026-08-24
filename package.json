@@ -1,6 +1,6 @@
 {
   "name": "ignoregen",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "description": "Fast, customizable, and AI-powered .gitignore generator supporting 120+ stacks, frameworks, operating systems, and IDEs.",
   "author": "MD Razikul Islam Joni <razikuljoni@gmail.com> (https://github.com/razikuljoni)",
   "license": "MIT",
@@ -29,7 +29,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "clean": "next clean"
+    "clean": "next clean",
+    "version:patch": "npm version patch",
+    "version:minor": "npm version minor",
+    "version:major": "npm version major"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
