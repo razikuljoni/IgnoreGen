@@ -19,6 +19,7 @@
 - 🎨 **Syntax Highlighting & Live Preview**: Real-time combined `.gitignore` output preview with syntax highlighting.
 - 💾 **Preset Management**: Save custom rule sets and load them in one click. Local storage sync enabled.
 - 📋 **One-Click Copy & Download**: Copy generated rules to clipboard or download directly as `.gitignore`.
+- 🔌 **GET API & CLI / curl Support**: Generate and fetch `.gitignore` programmatically via `GET /api/generate` or download directly using simple `curl` commands.
 - 🔍 **Instant Search & Categorization**: Fast search with category filters (Languages, Frameworks, IDEs, OS, Tools).
 - ⌨️ **Keyboard Shortcuts**: Built-in shortcut navigation (`⌘K` for quick search, `⌘C` to copy, `⌘D` to download).
 - 🌙 **Dark / Light / System Mode**: Seamless theme matching for developer preference.
@@ -65,6 +66,33 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
+
+## 🔌 Developer API & CLI Integration
+
+IgnoreGen provides a GET route to generate and download `.gitignore` files directly from your terminal or scripts.
+
+### Endpoint: `GET /api/generate`
+
+#### Query Parameters:
+| Parameter | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `templates` | `string` | `""` | Comma-separated template IDs (e.g., `node-js,typescript,macos,vscode`) |
+| `comments` | `boolean` | `true` | Include section headers and explanatory comments |
+| `sort` | `boolean` | `false` | Sort stack sections alphabetically |
+| `dedupe` | `boolean` | `true` | Automatically deduplicate identical ignore rules |
+| `customRules` | `string` | `""` | Additional custom ignore patterns (URL encoded) |
+
+#### Example curl Commands:
+
+```bash
+# Download .gitignore directly to project root
+curl -sL "https://ignoregen.vercel.app/api/generate?templates=node-js,typescript,vscode" -o .gitignore
+
+# Include custom rules and sort sections
+curl -sL "https://ignoregen.vercel.app/api/generate?templates=python,macos&customRules=%2Fprivate-keys%2F&sort=true" -o .gitignore
+```
 
 ---
 
