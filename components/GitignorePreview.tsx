@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { 
   GeneratedGitignore, 
   tokenizeGitignore, 
@@ -50,25 +50,48 @@ export const GitignorePreview: React.FC<GitignorePreviewProps> = ({
   onRemoveTemplate,
   onSaveAsPreset,
 }) => {
-  const [copied, setCopied] = useState(false);
-  const [showCliModal, setShowCliModal] = useState(false);
+  const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'highlighted' | 'raw' | 'custom'>('highlighted');
+  const [showCliModal, setShowCliModal] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
+
+  const origin = mounted && typeof window !== 'undefined' ? window.location.origin : 'https://ignoregen.vercel.app';
+
+  const handleCopy = async (key: string, text: string) => {
+    try {
+      if (typeof window !== 'undefined') {
+        await navigator.clipboard.writeText(text);
+        setCopiedKey(key);
+        setTimeout(() => setCopiedKey(null), 2200);
+      }
+    } catch (e) {
+      console.error('Failed to copy', e);
+    }
+  };
+
+  const getCliDownloadCommand = () => {
+    const baseUrl = origin;
+    const params = new URLSearchParams({
+      templates: generated.templatesUsed.map(t => t.id).join(','),
+      comments: includeComments.toString(),
+      sort: sortSections.toString(),
+      dedupe: autoDeduplicate.toString(),
+    });
+    if (customRules.trim()) params.append('customRules', customRules);
+    
+    return `curl -sL "${baseUrl}/api/generate?${params.toString()}" -o .gitignore`;
+  };
 
   const tokens = useMemo(() => {
     return tokenizeGitignore(generated.rawText);
   }, [generated.rawText]);
 
-  const handleCopy = async () => {
-    try {
-      if (typeof window !== 'undefined') {
-        await navigator.clipboard.writeText(generated.rawText);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2200);
-      }
-    } catch {
-      // Fallback
-    }
-  };
+
 
   const handleDownload = () => {
     try {
@@ -151,16 +174,16 @@ export const GitignorePreview: React.FC<GitignorePreviewProps> = ({
             <button
               id="copy-gitignore-btn"
               type="button"
-              onClick={handleCopy}
+              onClick={() => handleCopy('main', generated.rawText)}
               className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs font-semibold transition-all shadow-md shadow-blue-900/20 focus:outline-none ${
-                copied
+                copiedKey === 'main'
                   ? 'bg-emerald-600 hover:bg-emerald-500 text-white'
                   : 'bg-[#3b82f6] hover:bg-[#2563eb] text-white active:scale-95'
               }`}
-              aria-label={copied ? 'Copied to clipboard' : 'Copy .gitignore content to clipboard'}
+              aria-label={copiedKey === 'main' ? 'Copied to clipboard' : 'Copy .gitignore content to clipboard'}
             >
-              {copied ? <Check className="w-4 h-4 stroke-[2.5]" /> : <Copy className="w-4 h-4" />}
-              <span>{copied ? 'Copied!' : 'Copy'}</span>
+              {copiedKey === 'main' ? <Check className="w-4 h-4 stroke-[2.5]" /> : <Copy className="w-4 h-4" />}
+              <span>{copiedKey === 'main' ? 'Copied!' : 'Copy'}</span>
             </button>
 
             {/* Download Button */}
@@ -414,7 +437,10 @@ local-dev.sqlite
                   1. Download directly to current project directory:
                 </span>
                 <div className="p-2.5 rounded-md bg-slate-100 dark:bg-[#000] border border-slate-200 dark:border-[#222] text-blue-600 dark:text-[#3b82f6] font-mono overflow-x-auto flex items-center justify-between gap-2">
-                  <code>curl -sL &quot;https://gitignore.io/api/node,macos,visualstudiocode&quot; -o .gitignore</code>
+                  <code className="break-all">{getCliDownloadCommand()}</code>
+                  <button onClick={() => handleCopy('cli1', getCliDownloadCommand())} className="p-1 hover:bg-slate-200 dark:hover:bg-[#333] rounded shrink-0">
+                    {copiedKey === 'cli1' ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+                  </button>
                 </div>
               </div>
 
@@ -422,8 +448,11 @@ local-dev.sqlite
                 <span className="font-semibold text-slate-600 dark:text-[#888]">
                   2. Untrack already committed ignored files:
                 </span>
-                <div className="p-2.5 rounded-md bg-slate-100 dark:bg-[#000] border border-slate-200 dark:border-[#222] text-blue-600 dark:text-[#3b82f6] font-mono overflow-x-auto">
-                  <code>git rm -r --cached . &amp;&amp; git add . &amp;&amp; git commit -m &quot;Clean ignored files&quot;</code>
+                <div className="p-2.5 rounded-md bg-slate-100 dark:bg-[#000] border border-slate-200 dark:border-[#222] text-blue-600 dark:text-[#3b82f6] font-mono overflow-x-auto flex items-center justify-between gap-2">
+                  <code className="break-all">{'git rm -r --cached . && git add . && git commit -m "Clean ignored files"'}</code>
+                  <button onClick={() => handleCopy('cli2', 'git rm -r --cached . && git add . && git commit -m "Clean ignored files"')} className="p-1 hover:bg-slate-200 dark:hover:bg-[#333] rounded shrink-0">
+                    {copiedKey === 'cli2' ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+                  </button>
                 </div>
               </div>
 
@@ -431,8 +460,11 @@ local-dev.sqlite
                 <span className="font-semibold text-slate-600 dark:text-[#888]">
                   3. Verify why a file is ignored:
                 </span>
-                <div className="p-2.5 rounded-md bg-slate-100 dark:bg-[#000] border border-slate-200 dark:border-[#222] text-blue-600 dark:text-[#3b82f6] font-mono overflow-x-auto">
-                  <code>git check-ignore -v path/to/file</code>
+                <div className="p-2.5 rounded-md bg-slate-100 dark:bg-[#000] border border-slate-200 dark:border-[#222] text-blue-600 dark:text-[#3b82f6] font-mono overflow-x-auto flex items-center justify-between gap-2">
+                  <code className="break-all">git check-ignore -v path/to/file</code>
+                  <button onClick={() => handleCopy('cli3', 'git check-ignore -v path/to/file')} className="p-1 hover:bg-slate-200 dark:hover:bg-[#333] rounded shrink-0">
+                    {copiedKey === 'cli3' ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+                  </button>
                 </div>
               </div>
             </div>

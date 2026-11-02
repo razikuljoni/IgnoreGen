@@ -30,9 +30,10 @@
     "start": "next start",
     "lint": "eslint .",
     "clean": "next clean",
-    "version:patch": "npm version patch",
-    "version:minor": "npm version minor",
-    "version:major": "npm version major"
+    "release": "node scripts/release.mjs",
+    "release:patch": "node scripts/release.mjs --type patch",
+    "release:minor": "node scripts/release.mjs --type minor",
+    "release:major": "node scripts/release.mjs --type major"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
