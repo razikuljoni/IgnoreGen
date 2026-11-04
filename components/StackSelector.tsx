@@ -303,7 +303,7 @@ export const StackSelector: React.FC<StackSelectorProps> = ({
       </div>
 
       {/* Templates Grid List */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-2.5 max-h-[640px] focus:outline-none">
+      <div className="flex-1 overflow-y-auto p-4 space-y-2.5 max-h-[730px] focus:outline-none border-b border-slate-200 dark:border-[#1f1f1f]">
         {filteredTemplates.length === 0 ? (
           <div className="text-center py-14 px-4 space-y-3">
             <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-[#141414] border border-slate-200 dark:border-[#222] flex items-center justify-center mx-auto text-slate-400 dark:text-[#555]">

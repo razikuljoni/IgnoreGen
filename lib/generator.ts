@@ -27,9 +27,9 @@ export function generateGitignore(
   selectedIds: string[],
   options: GeneratorOptions
 ): GeneratedGitignore {
-  const selectedTemplates = TEMPLATES.filter((t) => selectedIds.includes(t.id));
+  // Use ONLY what the user selected. No forced defaults in the logic.
+  const templatesToProcess = TEMPLATES.filter((t) => selectedIds.includes(t.id));
 
-  let templatesToProcess = [...selectedTemplates];
   if (options.sortSections) {
     templatesToProcess.sort((a, b) => a.name.localeCompare(b.name));
   }
@@ -99,42 +99,54 @@ export function generateGitignore(
   if (options.customRules && options.customRules.trim()) {
     const customLines = options.customRules.split('\n');
     const processedCustom: string[] = [];
+    
+    // Filter out common unwanted AI fallback comments if they somehow got in
+    const filteredLines = customLines.filter(line => {
+      const lower = line.toLowerCase();
+      if (lower.includes('ai service was temporarily unavailable')) return false;
+      if (lower.includes('standard templates were selected based on file patterns')) return false;
+      return true;
+    });
 
-    if (options.includeComments) {
-      processedCustom.push('# ==========================================================================');
-      processedCustom.push('# Custom Project Rules');
-      processedCustom.push('# ==========================================================================');
-    }
+    const hasActualRules = filteredLines.some(l => l.trim() && !l.trim().startsWith('#'));
 
-    for (const rawLine of customLines) {
-      const line = rawLine.trim();
-      if (!line) {
-        processedCustom.push('');
-        continue;
-      }
-      if (line.startsWith('#')) {
-        if (options.includeComments) {
-          processedCustom.push(line);
-          commentCount++;
-        }
-        continue;
+    if (hasActualRules) {
+      if (options.includeComments) {
+        processedCustom.push('# ==========================================================================');
+        processedCustom.push('# Custom Project Rules');
+        processedCustom.push('# ==========================================================================');
       }
 
-      if (options.autoDeduplicate) {
-        if (seenRules.has(line)) {
+      for (const rawLine of filteredLines) {
+        const line = rawLine.trim();
+        if (!line) {
+          processedCustom.push('');
           continue;
         }
-        seenRules.add(line);
+        if (line.startsWith('#')) {
+          if (options.includeComments) {
+            processedCustom.push(line);
+            commentCount++;
+          }
+          continue;
+        }
+
+        if (options.autoDeduplicate) {
+          if (seenRules.has(line)) {
+            continue;
+          }
+          seenRules.add(line);
+        }
+
+        ruleCount++;
+        uniquePatterns.push(line);
+        processedCustom.push(line);
       }
 
-      ruleCount++;
-      uniquePatterns.push(line);
-      processedCustom.push(line);
-    }
-
-    const customText = processedCustom.join('\n').trim();
-    if (customText) {
-      outputSections.push(customText);
+      const customText = processedCustom.join('\n').trim();
+      if (customText) {
+        outputSections.push(customText);
+      }
     }
   }
 

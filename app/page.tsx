@@ -17,9 +17,12 @@ import { generateGitignore } from '@/lib/generator';
 import { Check, Sparkles, SlidersHorizontal, Eye } from 'lucide-react';
 
 export default function Home() {
-  const [selectedTemplateIds, setSelectedTemplateIds] = useState<string[]>(() => 
-    StorageService.getSelectedTemplates()
-  );
+  // Get initial state
+  const [selectedTemplateIds, setSelectedTemplateIds] = useState<string[]>(() => {
+    const saved = StorageService.getSelectedTemplates();
+    // Filter out defaults if user explicitly loaded empty state
+    return saved.length === 0 ? [] : saved;
+  });
   const [customRules, setCustomRules] = useState<string>(() => 
     StorageService.getCustomRules()
   );
@@ -87,6 +90,7 @@ export default function Home() {
   // Persist selections
   const handleToggleTemplate = (id: string) => {
     setSelectedTemplateIds((prev) => {
+      // If adding, just add. If removing, just remove.
       const next = prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id];
       StorageService.saveSelectedTemplates(next);
       return next;
@@ -126,7 +130,9 @@ export default function Home() {
 
   // Generate output
   const generated = useMemo(() => {
-    return generateGitignore(selectedTemplateIds, {
+    // If no templates selected, only use custom rules (generator will handle defaults)
+    const activeTemplates = selectedTemplateIds.length === 0 ? [] : selectedTemplateIds;
+    return generateGitignore(activeTemplates, {
       includeComments: preferences.includeComments,
       sortSections: preferences.sortSections,
       autoDeduplicate: preferences.autoDeduplicate,
@@ -341,8 +347,23 @@ export default function Home() {
             return next;
           });
           if (extraRules) {
+            // Replace or smartly update custom rules instead of blindly appending
             setCustomRules((prev) => {
-              const combined = prev ? `${prev}\n\n${extraRules}` : extraRules;
+              if (!prev) return extraRules;
+              // If the new rules are already in the old rules, don't append
+              if (prev.includes(extraRules.trim())) return prev;
+              
+              // Remove old fallback messages if they exist to prevent duplication
+              const fallbackMsg = "AI service was temporarily unavailable";
+              let cleanedPrev = prev;
+              if (prev.includes(fallbackMsg)) {
+                cleanedPrev = prev.split('\n')
+                  .filter(line => !line.includes(fallbackMsg) && !line.includes("Standard templates were selected"))
+                  .join('\n')
+                  .trim();
+              }
+              
+              const combined = cleanedPrev ? `${cleanedPrev}\n\n${extraRules}` : extraRules;
               StorageService.saveCustomRules(combined);
               return combined;
             });
