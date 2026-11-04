@@ -33,7 +33,17 @@ ${prompt || "N/A"}
 Repository tree / files:
 ${repoTree || "N/A"}`;
 
-    const models = ["gemini-1.5-flash", "gemini-1.5-pro", "gemini-pro"];
+    const configuredModel = process.env.GEMINI_MODEL?.trim();
+    const candidateModels = [
+      ...(configuredModel ? [configuredModel] : []),
+      "gemini-2.5-flash",
+      "gemini-2.0-flash",
+      "gemini-2.5-pro",
+      "gemini-2.0-flash-lite",
+      "gemini-1.5-flash",
+      "gemini-1.5-pro",
+    ];
+    const models = Array.from(new Set(candidateModels));
     let response;
     let lastError;
 

@@ -14,28 +14,101 @@ import {
   DEFAULT_PREFERENCES 
 } from '@/lib/storage';
 import { generateGitignore } from '@/lib/generator';
+import { decodeConfigToken, resolveTemplateIdOrAlias, DEFAULT_OPTIONS } from '@/lib/short-url';
 import { Check, Sparkles, SlidersHorizontal, Eye } from 'lucide-react';
 
+function getInitialUrlConfig() {
+  if (typeof window === 'undefined') return null;
+  const search = window.location.search;
+  if (!search) return null;
+  try {
+    const params = new URLSearchParams(search);
+    const token = params.get('s') || params.get('c');
+    if (token) {
+      const config = decodeConfigToken(token);
+      if (config.selectedIds.length > 0 || config.customRules || token.startsWith('c.')) {
+        return config;
+      }
+    }
+    const templatesParam = params.get('templates');
+    if (templatesParam) {
+      const rawIds = templatesParam.split(',').filter(Boolean);
+      const resolvedIds = rawIds
+        .map((id) => resolveTemplateIdOrAlias(id))
+        .filter((id): id is string => Boolean(id));
+      if (resolvedIds.length > 0) {
+        return {
+          selectedIds: resolvedIds,
+          options: { ...DEFAULT_OPTIONS },
+          customRules: '',
+        };
+      }
+    }
+  } catch {
+    // Ignore invalid url params
+  }
+  return null;
+}
+
 export default function Home() {
+  const [toastMessage, setToastMessage] = useState<string | null>(() => {
+    return getInitialUrlConfig() ? 'Loaded configuration from share link!' : null;
+  });
+
+  const showToast = React.useCallback((msg: string) => {
+    setToastMessage(msg);
+  }, []);
+
+  useEffect(() => {
+    if (!toastMessage) return;
+    const timer = setTimeout(() => {
+      setToastMessage(null);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [toastMessage]);
+
   // Get initial state
   const [selectedTemplateIds, setSelectedTemplateIds] = useState<string[]>(() => {
+    const fromUrl = getInitialUrlConfig();
+    if (fromUrl) {
+      StorageService.saveSelectedTemplates(fromUrl.selectedIds);
+      return fromUrl.selectedIds;
+    }
     const saved = StorageService.getSelectedTemplates();
-    // Filter out defaults if user explicitly loaded empty state
     return saved.length === 0 ? [] : saved;
   });
-  const [customRules, setCustomRules] = useState<string>(() => 
-    StorageService.getCustomRules()
-  );
-  const [preferences, setPreferences] = useState<UserPreferences>(() => 
-    StorageService.getPreferences()
-  );
+
+  const [customRules, setCustomRules] = useState<string>(() => {
+    const fromUrl = getInitialUrlConfig();
+    if (fromUrl) {
+      const rules = fromUrl.customRules || '';
+      StorageService.saveCustomRules(rules);
+      return rules;
+    }
+    return StorageService.getCustomRules();
+  });
+
+  const [preferences, setPreferences] = useState<UserPreferences>(() => {
+    const fromUrl = getInitialUrlConfig();
+    const saved = StorageService.getPreferences();
+    if (fromUrl) {
+      const next = {
+        ...saved,
+        includeComments: fromUrl.options.includeComments,
+        sortSections: fromUrl.options.sortSections,
+        autoDeduplicate: fromUrl.options.autoDeduplicate,
+      };
+      StorageService.savePreferences(next);
+      return next;
+    }
+    return saved;
+  });
 
   // Modals state
   const [docsOpen, setDocsOpen] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const [presetsOpen, setPresetsOpen] = useState(false);
   const [aiOpen, setAiOpen] = useState(false);
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   // Mobile active tab ('selector' | 'preview')
   const [mobileTab, setMobileTab] = useState<'selector' | 'preview'>('selector');
@@ -123,11 +196,6 @@ export default function Home() {
     });
   };
 
-  const showToast = (msg: string) => {
-    setToastMessage(msg);
-    setTimeout(() => setToastMessage(null), 3000);
-  };
-
   // Generate output
   const generated = useMemo(() => {
     // If no templates selected, only use custom rules (generator will handle defaults)
@@ -199,7 +267,7 @@ export default function Home() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [generated.rawText, docsOpen, shortcutsOpen, presetsOpen, aiOpen]);
+  }, [generated.rawText, docsOpen, shortcutsOpen, presetsOpen, aiOpen, showToast]);
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-[#0a0a0a] text-slate-900 dark:text-[#e5e5e5] transition-colors duration-300 antialiased">
@@ -349,7 +417,10 @@ export default function Home() {
           if (extraRules) {
             // Replace or smartly update custom rules instead of blindly appending
             setCustomRules((prev) => {
-              if (!prev) return extraRules;
+              if (!prev) {
+                StorageService.saveCustomRules(extraRules);
+                return extraRules;
+              }
               // If the new rules are already in the old rules, don't append
               if (prev.includes(extraRules.trim())) return prev;
               

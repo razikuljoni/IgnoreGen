@@ -170,6 +170,7 @@ export const StackSelector: React.FC<StackSelectorProps> = ({
               <button
                 id="clear-all-stacks-btn"
                 type="button"
+                suppressHydrationWarning
                 onClick={onClearAll}
                 disabled={!selectedCount}
                 className={`text-xs font-medium px-2.5 py-1 rounded transition-all focus:outline-none ${
@@ -272,7 +273,7 @@ export const StackSelector: React.FC<StackSelectorProps> = ({
             Showing <strong className="text-slate-900 dark:text-[#e5e5e5]">{filteredTemplates.length}</strong> items
           </span>
           {selectedCount > 0 && (
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-white dark:bg-[#1a1a1a] text-[#3b82f6] border border-[#3b82f6]/30">
+            <span suppressHydrationWarning className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-white dark:bg-[#1a1a1a] text-[#3b82f6] border border-[#3b82f6]/30">
               <Check className="w-3 h-3" /> {selectedCount} active
             </span>
           )}

@@ -16,8 +16,10 @@ import {
   Sparkles,
   Info,
   X,
-  FileCode
+  FileCode,
+  Share2
 } from 'lucide-react';
+import { getSmartCliCommand, getShareUrl } from '@/lib/short-url';
 
 interface GitignorePreviewProps {
   generated: GeneratedGitignore;
@@ -74,17 +76,31 @@ export const GitignorePreview: React.FC<GitignorePreviewProps> = ({
     }
   };
 
+  const selectedTemplateIds = useMemo(() => {
+    return generated.templatesUsed.map((t) => t.id);
+  }, [generated.templatesUsed]);
+
+  const generatorOptions = useMemo(() => ({
+    includeComments,
+    sortSections,
+    autoDeduplicate,
+    customRules,
+  }), [includeComments, sortSections, autoDeduplicate, customRules]);
+
   const getCliDownloadCommand = () => {
-    const baseUrl = origin;
-    const params = new URLSearchParams({
-      templates: generated.templatesUsed.map(t => t.id).join(','),
-      comments: includeComments.toString(),
-      sort: sortSections.toString(),
-      dedupe: autoDeduplicate.toString(),
+    return getSmartCliCommand(origin, {
+      selectedIds: selectedTemplateIds,
+      options: generatorOptions,
+      customRules,
     });
-    if (customRules.trim()) params.append('customRules', customRules);
-    
-    return `curl -sL "${baseUrl}/api/generate?${params.toString()}" -o .gitignore`;
+  };
+
+  const getShareLink = () => {
+    return getShareUrl(origin, {
+      selectedIds: selectedTemplateIds,
+      options: generatorOptions,
+      customRules,
+    });
   };
 
   const tokens = useMemo(() => {
@@ -125,7 +141,7 @@ export const GitignorePreview: React.FC<GitignorePreviewProps> = ({
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-white dark:bg-[#141414] border border-slate-200 dark:border-[#222] shadow-sm">
               <FileCode className="w-4 h-4 text-[#3b82f6]" />
               <span className="font-mono text-xs font-bold text-slate-900 dark:text-[#e5e5e5]">.gitignore</span>
-              <span className="text-[10px] px-1.5 py-0.2 rounded bg-slate-100 dark:bg-[#0a0a0a] text-slate-500 dark:text-[#888] border border-slate-200 dark:border-[#222] font-mono">
+              <span suppressHydrationWarning className="text-[10px] px-1.5 py-0.2 rounded bg-slate-100 dark:bg-[#0a0a0a] text-slate-500 dark:text-[#888] border border-slate-200 dark:border-[#222] font-mono">
                 {formattedSize}
               </span>
             </div>
@@ -209,13 +225,25 @@ export const GitignorePreview: React.FC<GitignorePreviewProps> = ({
             >
               <Terminal className="w-4 h-4" />
             </button>
+
+            {/* Share Configuration Link */}
+            <button
+              id="share-link-btn"
+              type="button"
+              onClick={() => handleCopy('share', getShareLink())}
+              className="p-1.5 rounded-md border border-slate-200 dark:border-[#333] bg-slate-100 hover:bg-slate-200 dark:bg-[#141414] dark:hover:bg-[#1a1a1a] text-slate-600 dark:text-[#888] hover:text-slate-900 dark:hover:text-[#e5e5e5] transition-colors"
+              title={copiedKey === 'share' ? 'Copied link to clipboard!' : 'Share configuration link'}
+              aria-label="Share configuration link"
+            >
+              {copiedKey === 'share' ? <Check className="w-4 h-4 text-emerald-500" /> : <Share2 className="w-4 h-4" />}
+            </button>
           </div>
         </div>
 
         {/* Selected Stack Badges & Controls Strip */}
         <div className="py-2 border-t border-slate-200 dark:border-[#1f1f1f]">
           <div className="flex items-center gap-1.5 flex-wrap">
-            <span className="text-[11px] font-medium text-slate-500 dark:text-[#888]">
+            <span suppressHydrationWarning className="text-[11px] font-medium text-slate-500 dark:text-[#888]">
               Active ({generated.templatesUsed.length}):
             </span>
             {generated.templatesUsed.length === 0 ? (
@@ -433,12 +461,17 @@ local-dev.sqlite
 
             <div className="space-y-3 text-xs">
               <div className="space-y-1">
-                <span className="font-semibold text-slate-600 dark:text-[#888]">
-                  1. Download directly to current project directory:
-                </span>
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold text-slate-600 dark:text-[#888]">
+                    1. Download directly to current project directory:
+                  </span>
+                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 font-medium">
+                    Short URL
+                  </span>
+                </div>
                 <div className="p-2.5 rounded-md bg-slate-100 dark:bg-[#000] border border-slate-200 dark:border-[#222] text-blue-600 dark:text-[#3b82f6] font-mono overflow-x-auto flex items-center justify-between gap-2">
                   <code className="break-all">{getCliDownloadCommand()}</code>
-                  <button onClick={() => handleCopy('cli1', getCliDownloadCommand())} className="p-1 hover:bg-slate-200 dark:hover:bg-[#333] rounded shrink-0">
+                  <button onClick={() => handleCopy('cli1', getCliDownloadCommand())} className="p-1 hover:bg-slate-200 dark:hover:bg-[#333] rounded shrink-0" title="Copy CLI Command">
                     {copiedKey === 'cli1' ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
                   </button>
                 </div>
@@ -446,7 +479,19 @@ local-dev.sqlite
 
               <div className="space-y-1">
                 <span className="font-semibold text-slate-600 dark:text-[#888]">
-                  2. Untrack already committed ignored files:
+                  2. Shareable web configuration link:
+                </span>
+                <div className="p-2.5 rounded-md bg-slate-100 dark:bg-[#000] border border-slate-200 dark:border-[#222] text-blue-600 dark:text-[#3b82f6] font-mono overflow-x-auto flex items-center justify-between gap-2">
+                  <code className="break-all">{getShareLink()}</code>
+                  <button onClick={() => handleCopy('cli-share', getShareLink())} className="p-1 hover:bg-slate-200 dark:hover:bg-[#333] rounded shrink-0" title="Copy Share Link">
+                    {copiedKey === 'cli-share' ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+                  </button>
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <span className="font-semibold text-slate-600 dark:text-[#888]">
+                  3. Untrack already committed ignored files:
                 </span>
                 <div className="p-2.5 rounded-md bg-slate-100 dark:bg-[#000] border border-slate-200 dark:border-[#222] text-blue-600 dark:text-[#3b82f6] font-mono overflow-x-auto flex items-center justify-between gap-2">
                   <code className="break-all">{'git rm -r --cached . && git add . && git commit -m "Clean ignored files"'}</code>

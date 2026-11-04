@@ -11,10 +11,13 @@ for (let i = 0; i < args.length; i++) {
   }
 }
 
-function run(cmd) {
+function run(cmd, { allowFail = false } = {}) {
   try {
-    return execSync(cmd, { encoding: 'utf8' }).trim();
+    return execSync(cmd, { encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] }).trim();
   } catch (e) {
+    if (allowFail) {
+      throw e;
+    }
     console.error(`Command failed: ${cmd}`, e.message);
     process.exit(1);
   }
@@ -25,15 +28,15 @@ console.log('🚀 Starting Automated Production-Grade Release & Changelog Genera
 // 1. Get last git tag
 let lastTag = '';
 try {
-  lastTag = run('git describe --tags --abbrev=0');
+  lastTag = run('git describe --tags --abbrev=0', { allowFail: true });
 } catch (e) {
   console.log('ℹ️ No previous git tags found. Treating all commits as part of initial release.');
 }
 
 // 2. Get commits since last tag
 const gitLogCmd = lastTag
-  ? `git log ${lastTag}..HEAD --pretty=format:"%H|%s|%an|%ad" --date=short`
-  : `git log --pretty=format:"%H|%s|%an|%ad" --date=short`;
+  ? `git log ${lastTag}..HEAD --pretty=format:"%H%x1f%s%x1f%b%x1f%an%x1f%ad%x1e" --date=short`
+  : `git log --pretty=format:"%H%x1f%s%x1f%b%x1f%an%x1f%ad%x1e" --date=short`;
 
 const rawLog = run(gitLogCmd);
 if (!rawLog) {
@@ -41,10 +44,16 @@ if (!rawLog) {
   process.exit(0);
 }
 
-const commitLines = rawLog.split('\n').filter(Boolean);
-const commits = commitLines.map((line) => {
-  const [hash, subject, author, date] = line.split('|');
-  return { hash, subject, author, date };
+const commitRecords = rawLog.split('\x1e').map((r) => r.trim()).filter(Boolean);
+const commits = commitRecords.map((record) => {
+  const [hash, subject, body, author, date] = record.split('\x1f');
+  return {
+    hash: hash || '',
+    subject: (subject || '').trim(),
+    body: (body || '').trim(),
+    author: (author || '').trim(),
+    date: (date || '').trim(),
+  };
 });
 
 // 3. Analyze conventional commits to determine bump type
@@ -60,16 +69,25 @@ const others = [];
 
 for (const c of commits) {
   const subject = c.subject;
-  if (subject.includes('BREAKING CHANGE') || subject.includes('!:')) {
+  const body = c.body;
+  const fullMessage = `${subject}\n${body}`;
+
+  const cleanSubject = subject.replace(/^[\p{Extended_Pictographic}\p{Emoji}\s]+/u, '').trim();
+  const isBreaking =
+    /BREAKING[ -]CHANGE:/i.test(fullMessage) ||
+    /^[a-z]+(\([^)]+\))?!:/i.test(cleanSubject) ||
+    cleanSubject.includes('BREAKING CHANGE');
+
+  if (isBreaking) {
     hasBreaking = true;
     breaking.push(c);
-  } else if (/^feat(\(.+\))?:/.test(subject)) {
+  } else if (/^feat(\(.+\))?:/i.test(cleanSubject)) {
     hasFeature = true;
     features.push(c);
-  } else if (/^fix(\(.+\))?:/.test(subject)) {
+  } else if (/^fix(\(.+\))?:/i.test(cleanSubject)) {
     hasFix = true;
     fixes.push(c);
-  } else if (/^perf(\(.+\))?:/.test(subject)) {
+  } else if (/^perf(\(.+\))?:/i.test(cleanSubject)) {
     perf.push(c);
   } else {
     others.push(c);
