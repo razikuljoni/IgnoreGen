@@ -349,7 +349,10 @@ export default function Home() {
           if (extraRules) {
             // Replace or smartly update custom rules instead of blindly appending
             setCustomRules((prev) => {
-              if (!prev) return extraRules;
+              if (!prev) {
+                StorageService.saveCustomRules(extraRules);
+                return extraRules;
+              }
               // If the new rules are already in the old rules, don't append
               if (prev.includes(extraRules.trim())) return prev;
               

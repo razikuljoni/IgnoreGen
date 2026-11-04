@@ -8,11 +8,6 @@ export async function GET(request: NextRequest) {
   const templateIds = templatesParam ? templatesParam.split(',').filter(Boolean) : [];
   const customRules = searchParams.get('customRules') || '';
 
-  // Bad Request Validation: at least one input parameter must be provided
-  if (templateIds.length === 0 && !customRules.trim()) {
-    return new NextResponse('Bad Request: At least one stack template or customRules must be provided.', { status: 400 });
-  }
-
   // Check for any invalid/unsupported template IDs
   const validTemplateIds = new Set(TEMPLATES.map((t) => t.id));
   const invalidIds = templateIds.filter((id) => !validTemplateIds.has(id));

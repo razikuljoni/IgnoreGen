@@ -11,10 +11,13 @@ for (let i = 0; i < args.length; i++) {
   }
 }
 
-function run(cmd) {
+function run(cmd, { allowFail = false } = {}) {
   try {
-    return execSync(cmd, { encoding: 'utf8' }).trim();
+    return execSync(cmd, { encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] }).trim();
   } catch (e) {
+    if (allowFail) {
+      throw e;
+    }
     console.error(`Command failed: ${cmd}`, e.message);
     process.exit(1);
   }
@@ -25,7 +28,7 @@ console.log('🚀 Starting Automated Production-Grade Release & Changelog Genera
 // 1. Get last git tag
 let lastTag = '';
 try {
-  lastTag = run('git describe --tags --abbrev=0');
+  lastTag = run('git describe --tags --abbrev=0', { allowFail: true });
 } catch (e) {
   console.log('ℹ️ No previous git tags found. Treating all commits as part of initial release.');
 }
