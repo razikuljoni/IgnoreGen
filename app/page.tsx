@@ -80,9 +80,10 @@ export default function Home() {
 
   const [customRules, setCustomRules] = useState<string>(() => {
     const fromUrl = getInitialUrlConfig();
-    if (fromUrl && fromUrl.customRules) {
-      StorageService.saveCustomRules(fromUrl.customRules);
-      return fromUrl.customRules;
+    if (fromUrl) {
+      const rules = fromUrl.customRules || '';
+      StorageService.saveCustomRules(rules);
+      return rules;
     }
     return StorageService.getCustomRules();
   });
