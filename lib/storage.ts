@@ -31,7 +31,7 @@ export const DEFAULT_PREFERENCES: UserPreferences = {
   sortSections: false,
   autoDeduplicate: true,
   includeLineNumbers: true,
-  defaultTemplateIds: ['node-js', 'typescript', 'env-files', 'vscode', 'macos', 'windows'],
+  defaultTemplateIds: [], // Start with an empty selection
 };
 
 const STORAGE_KEYS = {
@@ -47,7 +47,9 @@ export const StorageService = {
     if (typeof window === 'undefined') return DEFAULT_PREFERENCES.defaultTemplateIds;
     try {
       const stored = localStorage.getItem(STORAGE_KEYS.SELECTED_TEMPLATES);
-      return stored ? JSON.parse(stored) : DEFAULT_PREFERENCES.defaultTemplateIds;
+      // If it exists but is an empty array string "[]", we should return []
+      // If it doesn't exist at all (null), we return defaults
+      return stored !== null ? JSON.parse(stored) : DEFAULT_PREFERENCES.defaultTemplateIds;
     } catch {
       return DEFAULT_PREFERENCES.defaultTemplateIds;
     }

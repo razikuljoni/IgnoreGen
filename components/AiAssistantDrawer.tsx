@@ -12,6 +12,7 @@ import {
   FileCode, 
   AlertCircle 
 } from 'lucide-react';
+import { Toast } from './ui/Toast';
 
 interface AiResult {
   detectedStackSummary: string;
@@ -36,6 +37,7 @@ export const AiAssistantDrawer: React.FC<AiAssistantDrawerProps> = ({
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<AiResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [showToast, setShowToast] = useState(false);
 
   if (!isOpen) return null;
 
@@ -71,16 +73,24 @@ export const AiAssistantDrawer: React.FC<AiAssistantDrawerProps> = ({
   const handleApply = () => {
     if (!result) return;
     onApplyRecommendations(result.recommendedTemplateIds, result.customRules);
+    setShowToast(true);
     onClose();
   };
 
   return (
-    <div 
-      className="fixed inset-0 z-50 bg-black/60 dark:bg-black/80 backdrop-blur-xs flex items-center justify-end animate-in fade-in duration-200"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="ai-drawer-title"
-    >
+    <>
+      {showToast && (
+        <Toast 
+          message="Recommendations applied successfully!" 
+          onClose={() => setShowToast(false)} 
+        />
+      )}
+      <div 
+        className="fixed inset-0 z-50 bg-black/60 dark:bg-black/80 backdrop-blur-xs flex items-center justify-end animate-in fade-in duration-200"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="ai-drawer-title"
+      >
       <div className="bg-white dark:bg-[#0f0f0f] text-slate-900 dark:text-[#e5e5e5] border-l border-slate-200 dark:border-[#1f1f1f] w-full max-w-xl h-full flex flex-col shadow-2xl animate-in slide-in-from-right duration-200">
         {/* Drawer Header */}
         <div className="p-4 sm:p-5 border-b border-slate-200 dark:border-[#1f1f1f] flex items-center justify-between bg-slate-50 dark:bg-[#141414]">
@@ -232,18 +242,32 @@ docker-compose.yml`}
               )}
 
               {/* Apply Button */}
-              <button
-                type="button"
-                onClick={handleApply}
-                className="w-full py-2.5 rounded-md font-bold bg-[#3b82f6] hover:bg-[#2563eb] text-white flex items-center justify-center gap-2 shadow-md shadow-blue-900/20 transition-all"
-              >
-                <Check className="w-4 h-4 stroke-[2.5]" />
-                <span>Apply AI Recommendations to Generator</span>
-              </button>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    onApplyRecommendations(result.recommendedTemplateIds, result.customRules);
+                    onClose();
+                  }}
+                  className="flex-1 py-2.5 rounded-md font-bold bg-slate-100 hover:bg-slate-200 dark:bg-[#1a1a1a] dark:hover:bg-[#222] text-slate-800 dark:text-[#e5e5e5] border border-slate-200 dark:border-[#333] flex items-center justify-center gap-2 transition-all"
+                >
+                  <FileCode className="w-4 h-4" />
+                  <span>Preview .gitignore</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={handleApply}
+                  className="flex-1 py-2.5 rounded-md font-bold bg-[#3b82f6] hover:bg-[#2563eb] text-white flex items-center justify-center gap-2 shadow-md shadow-blue-900/20 transition-all"
+                >
+                  <Check className="w-4 h-4 stroke-[2.5]" />
+                  <span>Apply</span>
+                </button>
+              </div>
             </div>
           )}
         </div>
       </div>
     </div>
-  );
+  </>
+);
 };
