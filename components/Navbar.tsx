@@ -126,7 +126,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             <Bookmark className="w-3.5 h-3.5 text-[#3b82f6]" />
             <span className="hidden md:inline">Presets</span>
-            <span className="inline-flex items-center justify-center px-1.5 py-0.2 rounded text-[9px] font-bold bg-[#3b82f6] text-white">
+            <span 
+              suppressHydrationWarning
+              className="inline-flex items-center justify-center px-1.5 py-0.2 rounded text-[9px] font-bold bg-[#3b82f6] text-white"
+            >
               {selectedCount}
             </span>
           </button>

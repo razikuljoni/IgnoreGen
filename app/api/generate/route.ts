@@ -1,12 +1,43 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { generateGitignore, GeneratorOptions } from '@/lib/generator';
 import { TEMPLATES } from '@/data/templates';
+import { decodeConfigToken } from '@/lib/short-url';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const templatesParam = searchParams.get('templates');
-  const templateIds = templatesParam ? templatesParam.split(',').filter(Boolean) : [];
-  const customRules = searchParams.get('customRules') || '';
+  const token = searchParams.get('s') || searchParams.get('c');
+
+  let templateIds: string[] = [];
+  let customRules = '';
+  let options: GeneratorOptions;
+
+  if (token) {
+    const config = decodeConfigToken(token);
+    templateIds = config.selectedIds;
+    customRules = config.customRules;
+    options = {
+      includeComments: searchParams.has('comments')
+        ? searchParams.get('comments') !== 'false'
+        : config.options.includeComments,
+      sortSections: searchParams.has('sort')
+        ? searchParams.get('sort') === 'true'
+        : config.options.sortSections,
+      autoDeduplicate: searchParams.has('dedupe')
+        ? searchParams.get('dedupe') !== 'false'
+        : config.options.autoDeduplicate,
+      customRules,
+    };
+  } else {
+    const templatesParam = searchParams.get('templates');
+    templateIds = templatesParam ? templatesParam.split(',').filter(Boolean) : [];
+    customRules = searchParams.get('customRules') || '';
+    options = {
+      includeComments: searchParams.get('comments') !== 'false',
+      sortSections: searchParams.get('sort') === 'true',
+      autoDeduplicate: searchParams.get('dedupe') !== 'false',
+      customRules,
+    };
+  }
 
   // Check for any invalid/unsupported template IDs
   const validTemplateIds = new Set(TEMPLATES.map((t) => t.id));
@@ -14,13 +45,6 @@ export async function GET(request: NextRequest) {
   if (invalidIds.length > 0) {
     return new NextResponse(`Bad Request: Invalid or unsupported template ID(s): ${invalidIds.join(', ')}`, { status: 400 });
   }
-
-  const options: GeneratorOptions = {
-    includeComments: searchParams.get('comments') !== 'false',
-    sortSections: searchParams.get('sort') === 'true',
-    autoDeduplicate: searchParams.get('dedupe') !== 'false',
-    customRules,
-  };
 
   try {
     const generated = generateGitignore(templateIds, options);

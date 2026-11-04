@@ -71,26 +71,48 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 🔌 Developer API & CLI Integration
 
-IgnoreGen provides a GET route to generate and download `.gitignore` files directly from your terminal or scripts.
+IgnoreGen provides flexible, short endpoints to fetch and download `.gitignore` files directly from your terminal, CI/CD pipelines, or automation scripts.
 
-### Endpoint: `GET /api/generate`
+### 1. Short Human-Readable Route: `GET /api/g/[...slug]`
+Download rules using concise comma-separated stack names or common aliases:
+
+```bash
+# Basic project setup using short aliases (node -> node-js, ts -> typescript)
+curl -sL "https://ignoregen.vercel.app/api/g/node,ts" -o .gitignore
+
+# Multi-stack with tools & OS (py -> python, tf -> terraform, k8s -> kubernetes-helm)
+curl -sL "https://ignoregen.vercel.app/api/g/py,docker,tf,k8s,mac" -o .gitignore
+```
+
+#### Supported Common Aliases:
+- **Languages**: `node` / `js` (node-js), `ts` (typescript), `py` (python), `rs` (rust), `go` (go), `cpp` / `c` (c-cpp), `dotnet` / `csharp` (csharp-dotnet), `rb` (ruby), `kt` (kotlin)
+- **Frameworks**: `next` (nextjs), `vue` (vue-nuxt), `svelte` (svelte-sveltekit), `fastapi` (fastapi-flask), `spring` (spring-boot), `rn` (react-native-expo), `electron` (electron-tauri)
+- **Package Managers**: `pnpm`, `yarn`, `npm` (pnpm-yarn-npm), `pip` / `poetry` / `conda` (pip-poetry-conda), `gradle` (maven-gradle)
+- **DevOps & Tools**: `docker`, `turbo` (turborepo), `vite` (vite-webpack), `k8s` / `helm` (kubernetes-helm), `tf` (terraform), `prisma` (prisma-drizzle)
+- **OS & Secrets**: `mac` (macos), `win` (windows), `env` (env-files), `keys` (keys-certificates), `db` (logs-databases)
+
+### 2. Stateless Compact Token Route: `GET /api/g?s=<token>`
+For configurations with 4+ stacks or custom rules, IgnoreGen compresses selections into an ultra-short bitmask token (10–15 characters):
+
+```bash
+# 60+ stacks compressed into ~14 characters with zero database overhead
+curl -sL "https://ignoregen.vercel.app/api/g?s=m.__________8B" -o .gitignore
+```
+
+### 3. Full / Legacy Query Route: `GET /api/generate`
 
 #### Query Parameters:
 | Parameter | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
+| `s` / `c` | `string` | `""` | Compact configuration token |
 | `templates` | `string` | `""` | Comma-separated template IDs (e.g., `node-js,typescript,macos,vscode`) |
 | `comments` | `boolean` | `true` | Include section headers and explanatory comments |
 | `sort` | `boolean` | `false` | Sort stack sections alphabetically |
 | `dedupe` | `boolean` | `true` | Automatically deduplicate identical ignore rules |
 | `customRules` | `string` | `""` | Additional custom ignore patterns (URL encoded) |
 
-#### Example curl Commands:
-
 ```bash
-# Download .gitignore directly to project root
-curl -sL "https://ignoregen.vercel.app/api/generate?templates=node-js,typescript,vscode" -o .gitignore
-
-# Include custom rules and sort sections
+# Download .gitignore with custom rules and alphabetical sorting
 curl -sL "https://ignoregen.vercel.app/api/generate?templates=python,macos&customRules=%2Fprivate-keys%2F&sort=true" -o .gitignore
 ```
 

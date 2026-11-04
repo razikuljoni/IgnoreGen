@@ -216,6 +216,29 @@ export const DocsModal: React.FC<DocsModalProps> = ({ isOpen, onClose }) => {
                 git config --global core.excludesfile ~/.gitignore_global
               </pre>
             </div>
+
+            {/* Snippet D: Download via CLI */}
+            <div className="p-3.5 rounded-lg bg-slate-50 dark:bg-[#141414] border border-slate-200 dark:border-[#222] space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="font-semibold text-slate-900 dark:text-[#e5e5e5]">
+                  D. Instant Download via CLI (Short URLs)
+                </span>
+                <button
+                  type="button"
+                  onClick={() => copyToClipboard('curl -sL "https://ignoregen.vercel.app/api/g/node,ts" -o .gitignore', 'cli-download')}
+                  className="p-1 text-slate-400 hover:text-slate-700 dark:text-[#888] dark:hover:text-[#e5e5e5] rounded"
+                  title="Copy command"
+                >
+                  {copiedSnippet === 'cli-download' ? <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                </button>
+              </div>
+              <p className="text-[11px] text-slate-500 dark:text-[#888]">
+                Download .gitignore directly into your project root using concise stack aliases:
+              </p>
+              <pre className="p-2.5 rounded-md bg-slate-100 dark:bg-[#000] border border-slate-200 dark:border-[#222] text-blue-600 dark:text-[#3b82f6] font-mono text-[11px] overflow-x-auto">
+                curl -sL &quot;https://ignoregen.vercel.app/api/g/node,ts&quot; -o .gitignore
+              </pre>
+            </div>
           </section>
 
           {/* Section 4: Security & Lockfile Checklist */}
